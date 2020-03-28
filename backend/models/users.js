@@ -48,25 +48,43 @@ function authenticate(req, res) {
                     token: accessToken
                 });
             } else {
-                res.status(401);
+                res.sendStatus(401);
             };
         });
     }, result => {
-        res.status(401);
+        res.sendStatus(401);
     });
 }
 
-function updateUser(res, user) {
-    
+function updateUser(req, res) {
+    knex('users').where({username: req.user}).update({
+        hobby: req.body.hobby,
+    }).then(result => {
+        res.sendStatus(201);
+    }, result => {
+        res.sendStatus(400);
+        console.log(result);
+    });
 }
 
-module.exports = {insert, authenticateJWT, authenticate};
 
-/*
 function getMatchingUsers(user, nearby) {
-    select hobbies from table where username in user
+    knex('users').select('hobby').where({username: user.
     
-    
-    SELECT * FROM TABLE WHERE USERNAME IN (nearby) AND HOBBY @> ARRAY['asdf', 'dsfa', 'adfs']::varchar[]
+    knex('users').select('*').where(knex.raw("('" + nearby.join("','") + "') and hobby && \"{" + hobby.join("','") + "}\"")).then(result => {
+        
+    }, result => {
+        
+    });
 }
-*/
+
+function getHobby(req, res) {
+    knex('users').select('hobby').where({username: req.user}).then(result => {
+        res.json({hobby: result});
+    }, result => {
+        console.log(result);
+    });
+}
+
+module.exports = {insert, authenticateJWT, authenticate, updateUser, getHobby};
+

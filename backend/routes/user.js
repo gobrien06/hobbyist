@@ -15,11 +15,15 @@ router.post('/users/geo', users.authenticateJWT, function(req, res) {
         lat: req.body.lat,
         lon: req.body.lon
     });
-    res.json(nearby);
+    
 });
 
 router.post('/users/update', users.authenticateJWT, function(req, res) {
     users.updateUser(req, res);
+});
+
+router.get('/users/hobby', users.authenticateJWT, function(req, res) {
+    users.getHobby(req, res);
 });
 
 router.post('/auth', function(req, res) {
