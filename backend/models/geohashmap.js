@@ -26,13 +26,11 @@ class GeohashMap {
     add(user) {
         let hash = geohash.encode(user.lat, user.lon);
         console.log(this.geoMap.get(hash));
-        let map = this.geoMap.get(hash);
-        if(map) {
-            map.set(user.username, user);
+        let users = this.geoMap.get(hash);
+        if(users) {
+            this.geoMap.set(hash, [...users, user]);
         } else {
-            let map = new Map();
-            map.set(user.username, user);
-            this.geoMap.set(hash,  map);            
+            this.geoMap.set(hash, [user]);            
         }
         let nearby = [];
         let neighbors = [hash, ...geohash.neighbors(hash)];
@@ -41,25 +39,20 @@ class GeohashMap {
         for(const neighbor of neighbors) {
             let nearUsers = this.geoMap.get(neighbor);
             if(nearUsers) {
-                let keys = nearUsers.keys();
-                let key = keys.next();
-                while(!key.done) {
-                    console.log(key.value);
-                    if(currTime - nearUsers.get(key.value).timestamp > 15000) {
-                        nearUsers.delete(key.value);
+                 for(let i = 0; i < nearUsers.length; ++i) {
+                    if(currTime - nearUsers[i].timestamp > 1000 * 60 * 30) {
+                        nearUsers.splice(i, 1);
                         console.log('culled');
                     } else {
                         console.log('else');
-                        if(user.username == key.value) {
-                            key = keys.next();
+                        if(user.username == nearUsers[i].username) {
                             continue;
                         }
-                        if(getDistance(user, nearUsers.get(key.value)) < 1) {
+                        if(getDistance(user, nearUsers[i]) < 1) {
                             console.log('pushed');
-                            nearby.push(nearUsers.get(key.value));
+                            nearby.push(nearUsers[i]);
                         }
                     }    
-                    key = keys.next();
                 }
             }
         }

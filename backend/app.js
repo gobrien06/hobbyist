@@ -35,6 +35,8 @@ if(process.env.SSL_ON == 'true') {
 
 app.use(cors());
 app.use(require('./routes/user'));
+app.use(require('./routes/chat'));
+
 
 
 
