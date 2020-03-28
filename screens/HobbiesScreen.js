@@ -143,9 +143,9 @@ const styles = StyleSheet.create({
       height: 70,
       width: 230,
       margin:8,
-      borderRadius: 8,
-      borderWidth:6,
-      borderColor:'#FAE99E',
+      borderRadius: 10,
+      borderWidth:3,
+      borderColor:'#47CEB2',
     },
     container: {
       flex:1,

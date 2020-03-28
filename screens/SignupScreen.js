@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     },
     midText:{
         fontSize:80,
-        marginTop:-81,
+        marginTop:-82,
         fontWeight:`bold`,
         marginLeft:5,
         textAlign:`left`,

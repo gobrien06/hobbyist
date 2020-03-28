@@ -1,24 +1,39 @@
 import * as React from 'react';
-import { Alert, Image, StyleSheet,Dimensions, View, TouchableHighlight, Text, Slider } from 'react-native';
+import { Image, StyleSheet,Dimensions, View, TouchableHighlight, Text, ScrollView } from 'react-native';
 import HomeButton from '../components/HomeButton';
 
 export default function SearchSetupScreen({navigation}) {
-  const [range,setRange] = React.useState(20);
-  const [longitude, setLongitude] = React.useState();
-  const [latitude,setLatitude] = React.useState();
-  const submitInfo = () => {
+  const [hobbies,setHobbies] = React.useState(['test',`gfdg,`,`fdsfdsf`,`fdsf`,`g,`]);
+
+
+  const getInfo = () => {
     //HTTP get request
   }
 
-   
-  const goToEdit=()=>{
-      navigation.navigate('Hobbies');
-  }
 
-    const searchStart = () =>{
-        navigation.navigate('MatchScreen');
-        submitInfo();
+    const searchAgain = () =>{
+        navigation.navigate('SearchSetup');
     }
+
+    const message = () =>{
+      //message with twilio
+    }
+
+    React.useEffect(()=>{getInfo();});
+
+    const listItems = () =>{
+      let items = [ ];
+      for(let i=0;i<hobbies.length;i++){
+          items.push(
+            <View style={styles.hobbyItem}>
+            <Text style={styles.scrollText}>{'- '}{hobbies[i]}</Text>
+            </View>
+         )
+      }
+      console.log(hobbies);
+      //sendItems();
+      return items;
+  }
 
 
     return (
@@ -28,10 +43,16 @@ export default function SearchSetupScreen({navigation}) {
                
             <HomeButton navigation={navigation} color="turq"/>
 
+            <Image
+                source={
+                    require('../assets/images/lightturqbub.png')
+                }
+                style={styles.headerBubbles}
+              />
             </View>
 
             <Text style={styles.midText}>
-            Match found!
+            
             </Text>
             <View style={styles.midContain}>
             <Image 
@@ -45,28 +66,30 @@ export default function SearchSetupScreen({navigation}) {
                 styles.iconStyle
             }
             />
-            <TouchableHighlight style={styles.midTouch} onPress={()=>goToEdit()} >
-              <Text style={styles.buttonText}>Edit</Text>
-            </TouchableHighlight>
-        
+         
             </View>
-          
+
+            <View style={{alignContent:`center`,justifyContent:`center`,textAlign:`center`, marginVertical:20,marginLeft:95}}>
+            <Text style={styles.rangeText}>You both like:</Text>
+            <View style={styles.scrollSettings}>
+              <ScrollView>
+              {listItems()}
+              </ScrollView>
+            </View>
+            </View>
 
             <View style={styles.buttonContainer}>
-            <Text style={styles.rangeText}>Range:</Text>
-            <Slider maximumValue={100} style={styles.slider} onSlidingComplete={(value) => setRange(value)}/>
+            <TouchableHighlight style={styles.touchStyle} onPress={()=>searchAgain()} >
+              <Text style={styles.buttonText}>Search Again</Text>
+            </TouchableHighlight>
+    
 
-            <TouchableHighlight style={styles.touchStyle} onPress={()=>searchStart()} >
-              <Text style={styles.buttonText}>Start Searching</Text>
+            <TouchableHighlight style={styles.touchStyle} onPress={()=>message()} >
+              <Text style={styles.buttonText}>Message</Text>
             </TouchableHighlight>
             </View>
          
-            <Image
-                source={
-                    require('../assets/images/bubblesgrey.png')
-                }
-                style={styles.bottomBubble}
-            />
+         
         </View>
       );
 }
@@ -74,6 +97,17 @@ export default function SearchSetupScreen({navigation}) {
 var widthVal = Dimensions.get('window').width + 10; 
 
 const styles = StyleSheet.create({
+    scrollText:{
+      color:`#FAE99E`,
+      fontSize:30,
+
+    },
+    scrollSettings:{
+      height:100,
+      textAlign:`center`,
+      width:200,
+      marginLeft:55,
+    },
     midTouch:{
         elevation:1,
         height:50,
@@ -84,17 +118,14 @@ const styles = StyleSheet.create({
         position:`absolute`,
         backgroundColor:`#FAE99E`,
     },
-    mapCircle:{
-        elevation:-1,
-        alignSelf:`center`,
-        height:350,
-        borderRadius:8, 
-        width:widthVal,
-    },
+
     rangeText:{
         color:`#47CEB2`,
-        fontWeight:`bold`,
         fontSize:35,
+    },
+    hobbiesText:{
+      color:`#FAE99E`,
+      fontSize:25,
     },
     slider:{
         height:50,
@@ -126,7 +157,7 @@ const styles = StyleSheet.create({
     headerImage:{
         elevation: -1,
         width:widthVal,
-        height:450,
+        height:220,
         marginTop:-80,
         backgroundColor:`#47CEB2`,
     },
@@ -138,15 +169,15 @@ const styles = StyleSheet.create({
     },
     midText:{
         fontSize:60,
-        marginTop:-260,
+        marginTop:-170,
         fontWeight:`bold`,
         textAlign:`center`,
         color:`#1A1A1A`, 
         marginBottom:10,
     },
     touchStyle:{
-        marginTop:15,
-        marginBottom:30,
+        marginTop:20,
+        marginBottom:15,
         backgroundColor:`#47CEB2`,
         borderRadius:8,
         alignItems:`center`,
@@ -160,11 +191,12 @@ const styles = StyleSheet.create({
         color:`#202020`,
       },
       bottomBubble:{
+        marginTop:-30,
         alignSelf:`flex-end`,
       },
       buttonContainer:{
         alignItems: 'center',
         justifyContent: 'center', 
-          marginTop:30,
+
       }
 });
