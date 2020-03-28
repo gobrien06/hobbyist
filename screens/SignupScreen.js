@@ -133,7 +133,6 @@ const styles = StyleSheet.create({
         justifyContent:`center`,
         padding:5,
         width:200,
-        fontSize:100,
         height:60,
       },
       buttonText:{

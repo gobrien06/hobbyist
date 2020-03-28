@@ -5,6 +5,9 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { MonoText } from '../components/StyledText';
 
 export default function HomeScreen(props) {
+  const search = () =>{
+    props.navigation.navigate('SearchSetup', {setTOKEN:props.setTOKEN});
+  }
   const signUp = () =>{
     props.navigation.navigate('Signup', {setTOKEN:props.setTOKEN});
   }
@@ -92,6 +95,9 @@ export default function HomeScreen(props) {
       </View>
 
       <View style={styles.buttonContainer}>
+      <TouchableHighlight style={styles.touchStyle} onPress={()=>search()}>
+          <Text style={styles.buttonText}>Search</Text>
+        </TouchableHighlight>
       <TouchableHighlight style={styles.touchStyle} onPress={()=>goToEdit()} >
               <Text style={styles.buttonText}>Edit</Text>
       </TouchableHighlight>
@@ -125,8 +131,8 @@ const styles = StyleSheet.create({
     justifyContent:`center`,
   },
   touchStyle:{
-    marginTop:30,
-    marginBottom:30,
+    marginTop:5,
+    marginBottom:35,
     backgroundColor:`#47CEB2`,
     borderRadius:8,
     alignItems:`center`,

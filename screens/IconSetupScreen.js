@@ -2,13 +2,11 @@ import * as React from 'react';
 import { Alert, Image, StyleSheet,Dimensions, View, TouchableHighlight, Text } from 'react-native';
 import HomeButton from '../components/HomeButton';
 import * as ImagePicker from 'expo-image-picker';
+import Icon from '../components/Icon';
+import axios from 'axios';
 
 export default function IconSetupScreen({navigation}) {
-    const getIcon = () =>{
-        //HTTP get request
-    }
-
-  const [icon,setIcon] = React.useState(getIcon());
+  const [url, setURL]=React.useState(null);
 
   const submitInfo = () => {
     //HTTP get request
@@ -64,6 +62,7 @@ export default function IconSetupScreen({navigation}) {
                 styles.iconStyle
             }
             />
+            <Icon url={url}/>
             </View>
           
 

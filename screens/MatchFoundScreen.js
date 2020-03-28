@@ -1,36 +1,65 @@
 import * as React from 'react';
-import { Image, StyleSheet,Dimensions, View, TouchableHighlight, Text, ScrollView } from 'react-native';
+import { Image, StyleSheet,Dimensions, View, TouchableHighlight, Text, ScrollView, Platform, Linking } from 'react-native';
 import HomeButton from '../components/HomeButton';
+import Icon from '../components/Icon';
+import axios from 'axios';
 
-export default function SearchSetupScreen({navigation}) {
-  const [hobbies,setHobbies] = React.useState(['test',`gfdg,`,`fdsfdsf`,`fdsf`,`g,`]);
-
-
-  const getInfo = () => {
-    //HTTP get request
-  }
-
+export default function SearchSetupScreen(props) {
+    const [twiKey,setTwiKey] = React.useState(null);
 
     const searchAgain = () =>{
-        navigation.navigate('SearchSetup');
+        props.navigation.navigate('SearchSetup');
     }
 
-    const message = () =>{
-      //message with twilio
+    
+    
+    const openMsg = () =>{
+      const link = (Platform.OS === 'android')?'sms:1-408-555-1212?body=yourMessage'
+      : 'sms:1-408-555-1212';
+      
+      Linking.canOpenURL(link).then(supported => {
+        if (!supported) {
+          console.log('Unsupported url: ' + url)
+        } else {
+          return Linking.openURL(url)
+        }
+      }).catch(err => console.error('An error occurred', err))
     }
 
-    React.useEffect(()=>{getInfo();});
+    const getKey = async() =>{
+      const config = {
+        headers: {
+          'Authorization': 'BEARER ' + props.route.param.TOKEN,
+        }
+      }
+      console.log(config);
+      await axios.post('http://lahacks-hobbyist.tech:3000/chat',config)
+      .then((response)=>{
+          console.log(response);
+          setTwiKey(response.token);
+      })
+      .catch(()=>{
+        console.log('Connection error. Please try again later.');
+      })
+    }
 
-    const listItems = () =>{
+    const message = async() =>{
+      await getKey();
+      openMsg();
+    }
+
+
+    function listItems(){
       let items = [ ];
-      for(let i=0;i<hobbies.length;i++){
+      console.log(props.route.params.hobbies);
+      for(let i=0;i<props.route.params.hobbies.length;i++){
           items.push(
             <View style={styles.hobbyItem}>
-            <Text style={styles.scrollText}>{'- '}{hobbies[i]}</Text>
+            <Text style={styles.scrollText}>{'- '}{props.route.params.hobbies[i]}</Text>
             </View>
          )
       }
-      console.log(hobbies);
+      console.log(props.hobbies);
       //sendItems();
       return items;
   }
@@ -41,7 +70,7 @@ export default function SearchSetupScreen({navigation}) {
             <View>
                <View style={styles.headerImage}/>
                
-            <HomeButton navigation={navigation} color="turq"/>
+            <HomeButton navigation={props.navigation}/>
 
             <Image
                 source={
@@ -63,11 +92,11 @@ export default function SearchSetupScreen({navigation}) {
                 styles.iconStyle
             }
             />
-         
+            <Icon url={props.icon}/>
             </View>
 
             <View style={{alignContent:`center`,justifyContent:`center`,textAlign:`center`, marginVertical:20,marginLeft:95}}>
-            <Text style={styles.rangeText}>You both like:</Text>
+            <Text style={styles.rangeText}>You and {props.route.params.username} like:</Text>
             <View style={styles.scrollSettings}>
               <ScrollView>
               {listItems()}
@@ -117,8 +146,9 @@ const styles = StyleSheet.create({
     },
 
     rangeText:{
+      marginTop:30,
         color:`#47CEB2`,
-        fontSize:35,
+        fontSize:30,
     },
     hobbiesText:{
       color:`#FAE99E`,

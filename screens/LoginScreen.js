@@ -9,6 +9,7 @@ export default function LogIn(props) {
     const [password, setPassword] = React.useState(null);
     const [error, setError] = React.useState(null);
 
+  
     const submitInfo = async() => {
       let success = false;
       const user={
@@ -105,7 +106,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#202020',
     },
     headerImage:{
-  
         width:widthVal,
         height:380,
         marginTop:-250,

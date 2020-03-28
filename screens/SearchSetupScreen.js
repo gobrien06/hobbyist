@@ -1,24 +1,38 @@
 import * as React from 'react';
 import MapView from 'react-native-maps';
-import { Alert, Image, StyleSheet,Dimensions, View, TouchableHighlight, Text, Slider } from 'react-native';
+import { Alert, Image, StyleSheet,Dimensions, View, TouchableHighlight, Text, Slider, ActivityIndicator } from 'react-native';
 import HomeButton from '../components/HomeButton';
+import Icon from '../components/Icon';
 import axios from 'axios';
 
 export default function SearchSetupScreen(props) {
-  const [range,setRange] = React.useState(20);
+  const [isLoading,setLoading] = React.useState(false);
   const [longitude, setLongitude] = React.useState();
   const [latitude,setLatitude] = React.useState();
-  const [icon, setIcon] = React.useState('https://wompampsupport.azureedge.net/fetchimage?siteId=7575&v=2&jpgQuality=100&width=700&url=https%3A%2F%2Fi.kym-cdn.com%2Fentries%2Ficons%2Fmobile%2F000%2F028%2F232%2Fhamster.jpg');
+  const [nearby, setNearby] = React.useState(null);
+  const [msg, setMsg] = React.useState("");
+  
 
   const searchStart = async() =>{
+    setLoading(true);
+    setMsg("");
+   await submitInfo();
     searchMatch();
-    submitInfo();
   }
 
   const searchMatch = async() =>{
+    if(nearby){
+      console.log(nearby[0].hobby);
+      props.navigation.navigate('MatchScreen',{hobbies:nearby[0].hobby,username:nearby[0].username,icon:nearby[0].icon,TOKEN:props.TOKEN});
+    }
+    else{
+      setMsg("There's nobody near you. Try adding hobbies!");
+      setLoading(false);
+      return;
+    }
 
   }
-
+   
   const submitInfo = async() => {
     const user={
       lat:latitude,
@@ -35,11 +49,19 @@ export default function SearchSetupScreen(props) {
   
    await axios.post('http://lahacks-hobbyist.tech:3000/users/geo',user,config)
     .then((response)=>{
-        console.log(response);
+        if(response.data.nearby){
+          setNearby(response.data.nearby);
+        }
+        console.log(response.data.nearby);
       })
     .catch((error)=>{
       console.log(error);
     })
+
+    if(nearby==[]){
+      setNearby(null);
+    }
+
   }
 
   const getLocation = () =>{
@@ -60,28 +82,6 @@ export default function SearchSetupScreen(props) {
     return;
   }
    
-    const getIcon=async()=>{
-      await getLocation();
-
-      const config = {
-        headers: {
-          'Authorization': 'BEARER ' + props.TOKEN,
-        }
-      }
-
-      await axios.post('http://lahacks-hobbyist.tech:3000/user/icon',config)
-      .then((response)=>{
-          console.log(response);
-          if(response.data.icon){
-            setIcon(response.data.icon);
-          }
-        
-        })
-      .catch((error)=>{
-        console.log(error);
-      })
-      
-    }
 
     React.useEffect(getLocation, []);
 
@@ -97,7 +97,6 @@ export default function SearchSetupScreen(props) {
                     onRegionChange:{getLocation}
                 }}
                 onRegionChange={() => getLocation()}
-                zoom={range}
                 style={
                     styles.mapCircle
                 }/>
@@ -117,22 +116,23 @@ export default function SearchSetupScreen(props) {
             style={
                 styles.iconCircle
             }
-            style={
-                styles.iconStyle
-            }
-            />    
+            
+            />
+            <Icon/>
             </View>
           
 
             <View style={styles.buttonContainer}>
-            <Text style={styles.rangeText}>Range:</Text>
-            <Slider maximumValue={100} style={styles.slider} onSlidingComplete={(value) => setRange(value)}/>
+         
+            {isLoading && <ActivityIndicator color='47CEB2'size={50}/>}
 
             <TouchableHighlight style={styles.touchStyle} onPress={()=>searchStart()} >
               <Text style={styles.buttonText}>Start Searching</Text>
             </TouchableHighlight>
             </View>
-         
+            <Text style={styles.errorText}>
+              {msg}
+            </Text>
             <Image
                 source={
                     require('../assets/images/bubblesgrey.png')
@@ -146,6 +146,12 @@ export default function SearchSetupScreen(props) {
 var widthVal = Dimensions.get('window').width + 10; 
 
 const styles = StyleSheet.create({
+    errorText:{
+     padding:3,
+      fontSize:20,
+      color:`grey`,
+      marginTop:10,
+    },
     midTouch:{
         elevation:1,
         height:50,
@@ -216,8 +222,8 @@ const styles = StyleSheet.create({
         marginBottom:10,
     },
     touchStyle:{
-        marginTop:15,
-        marginBottom:30,
+        marginTop:40,
+        marginBottom:10,
         backgroundColor:`#47CEB2`,
         borderRadius:8,
         alignItems:`center`,
@@ -237,5 +243,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center', 
           marginTop:30,
+          textAlign:`center`,
       }
 });
