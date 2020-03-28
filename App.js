@@ -14,6 +14,7 @@ import IconSetupScreen from './screens/IconSetupScreen';
 import SearchSetupScreen from './screens/SearchSetupScreen';
 import MatchFoundScreen from './screens/MatchFoundScreen';
 import HobbiesScreen from './screens/HobbiesScreen';
+import ChatScreen from './screens/ChatScreen';
 
 import useLinking from './navigation/useLinking';
 
@@ -84,6 +85,7 @@ export default function App(props) {
               {props => <SearchSetupScreen {...props} TOKEN={TOKEN}/>}
             </Stack.Screen>
             <Stack.Screen name="MatchScreen" component={MatchFoundScreen} />
+            <Stack.Screen name="Chat" component={ChatScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       </View>

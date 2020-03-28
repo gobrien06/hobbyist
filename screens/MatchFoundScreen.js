@@ -6,43 +6,35 @@ import axios from 'axios';
 
 
 export default function SearchSetupScreen(props) {
-    const [twiKey,setTwiKey] = React.useState(null);
-    const [from, setFrom] = React.useState(null);
-
     const searchAgain = () =>{
         props.navigation.navigate('SearchSetup');
     }
 
-    
-    
-    const openMsg = () =>{
+    /*const openMsg = () =>{
       const link = (Platform.OS === 'android') ? `sms: ${from}?body=Hey! I just matched with you on Hobbyist, you seem pretty neat!`
       : `sms:${from}`;
 
-      Linking.openURL(link);
-    }
+      Linking.openURL(link); OPENS ANDROID SMS
+    }*/
 
-    const getKey = async() =>{
-      const config = {
-        headers: {
-          'Authorization': 'BEARER ' + props.route.param.TOKEN,
-        }
+    const joinChannel = async() =>{
+      const accepted={
+        channelID:props.pending_channel,
       }
-      console.log(config);
-      await axios.post('http://lahacks-hobbyist.tech:3000/chat',config)
+
+     await axios.post('http://lahacks-hobbyist.tech:3000/chat/channels/join',accepted)
       .then((response)=>{
-          console.log(response);
-          setTwiKey(response.token);
-          setFrom(response.from);
+        console.log(response);
       })
       .catch(()=>{
-        console.log('Connection error. Please try again later.');
-      })
+        console.log("error occurred");
+      }
+      )
     }
 
     const message = async() =>{
-      await getKey();
-      openMsg();
+      joinChannel();
+      props.navigation.navigate('Chat');
     }
 
 

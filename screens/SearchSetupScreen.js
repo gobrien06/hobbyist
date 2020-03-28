@@ -21,9 +21,9 @@ export default function SearchSetupScreen(props) {
   }
 
   const searchMatch = async() =>{
-    if(nearby){
+    if(nearby.hobby){
       console.log(nearby[0].hobby);
-      props.navigation.navigate('MatchScreen',{hobbies:nearby[0].hobby,username:nearby[0].username,icon:nearby[0].icon,TOKEN:props.TOKEN});
+      props.navigation.navigate('MatchScreen',{hobbies:nearby[0].hobby,username:nearby[0].username,icon:nearby[0].icon,TOKEN:props.TOKEN,pending:nearby[0].pending_channel});
     }
     else{
       setMsg("There's nobody near you. Try adding hobbies!");
@@ -110,10 +110,10 @@ export default function SearchSetupScreen(props) {
                     styles.mapCircle
                 }
                 >
-                  <Marker
-                  coordinate={{lat:latitude,lng:longitude}}
+                  {latitude?<Marker
+                  coordinate={{latitude:latitude,longitude:longitude}}
                   title="(You)"
-                  />
+                  />:<></>}
 
                   </MapView>
                

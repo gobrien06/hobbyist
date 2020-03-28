@@ -208,7 +208,7 @@ const styles = StyleSheet.create({
     },
     headerImage:{
   
-      borderBottomLeftRadius:50,
+      borderBottomLeftRadius:70,
       elevation: -1,
       width:widthVal,
       height:245,
@@ -223,7 +223,7 @@ const styles = StyleSheet.create({
     },
     midText:{
         fontSize:80,
-        marginTop:-95,
+        marginTop:-85,
         fontFamily:'Nunito',
     
         textAlign:`center`,

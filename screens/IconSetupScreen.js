@@ -63,7 +63,7 @@ export default function IconSetupScreen(props) {
         <View style={styles.container}>
             <Image 
               source={
-                require('../assets/images/greyabstract.png')
+                require('../assets/images/greyabstract-1.png')
               }
             style={styles.headerImage}/>
            
@@ -83,8 +83,6 @@ export default function IconSetupScreen(props) {
             />
             <Icon url={url}/>
             </View>
-          
-
             <View style={styles.buttonContainer}>
          
             <TouchableHighlight style={styles.imageBtnStyle} onPress={()=>takePicture()} >
@@ -120,7 +118,8 @@ const styles = StyleSheet.create({
       marginTop:10,
     },
     midContain:{
-        marginTop:-5,
+        marginTop:-180,
+        padding:50,
         alignSelf:`center`,
         justifyContent:`center`,
         alignContent:`center`,  
@@ -128,7 +127,7 @@ const styles = StyleSheet.create({
     container: {
     
       flex:1,
-        backgroundColor: '#878787',
+        backgroundColor: '#2b2b2b',
         alignContent:`center`,
     },
     headerImage:{
@@ -155,9 +154,9 @@ const styles = StyleSheet.create({
         color:`#d3d3d3`,
       },
     touchStyle:{
-        marginTop:20,
+        marginTop:30,
         marginBottom:30,
-        backgroundColor:`#d3d3d3`,
+        backgroundColor:`#47CEB2`,
         borderRadius:50,
         alignItems:`center`,
         justifyContent:`center`,
@@ -169,7 +168,7 @@ const styles = StyleSheet.create({
         fontFamily:'Nunito',
         fontWeight:`bold`,
         fontSize:30,
-        color:`#878787`,
+        color:`#2b2b2b`,
       },
       bottomBubble:{
         elevation:-1,
