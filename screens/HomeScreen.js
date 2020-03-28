@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Image, Platform, StyleSheet, View, Dimensions, TouchableHighlight, Text } from 'react-native';
+
 import { ScrollView } from 'react-native-gesture-handler';
 
 import { MonoText } from '../components/StyledText';
@@ -29,34 +30,44 @@ export default function HomeScreen(props) {
   return (
     <View style={styles.container}>
         <View style={styles.welcomeContainer}>
-          <Image
-            source={
-                require('../assets/images/group2.png')
-            }
-            style={styles.headerImage}
-          />
+         
+          
         </View>
         <View style={styles.getStartedContainer}>
-          <Image
+        <Image
             source={
                 require('../assets/images/Group.png')
             }
             style={styles.midImageBub}
           />
-          <Image
-            source={
-                require('../assets/images/hobbyist.png')
-            }
-            style={styles.midImage}
-          />
+        <Image source={
+          require('../assets/images/leaf-doodle-png-2.png')
+      
+        }
+        style={{
+          height:170,
+          width:170,
+        }
+    
+          }/>
+          
+           <Text
+          style={{
+            fontFamily:`nunito-bold`,
+            fontSize:60,
+            color:'#FAE99E',
+          }}>
+            hobbyist
+          </Text>
         </View>
 
         <View style={styles.buttonContainer}>
-        <TouchableHighlight style={styles.touchStyle} onPress={()=>signUp()}>
-          <Text style={styles.buttonText}>Sign Up</Text>
-        </TouchableHighlight>
         <TouchableHighlight style={styles.touchStyle} onPress={()=>login()}>
+        
           <Text style={styles.buttonText}>Login</Text>
+        </TouchableHighlight>
+        <TouchableHighlight onPress={()=>signUp()}>
+          <Text style={styles.freeText}>Or, click here to sign up.</Text>
         </TouchableHighlight>
         </View>
 
@@ -67,35 +78,45 @@ export default function HomeScreen(props) {
             style={styles.bottomBubble}
         />
     </View>
-  );
+  )
   }
   return(
       <View style={styles.container}>
-      <View style={styles.welcomeContainer}>
-        <Image
-          source={
-              require('../assets/images/group2.png')
-          }
-          style={styles.headerImage}
-        />
-      </View>
-      <View style={styles.getStartedContainer}>
-        <Image
-          source={
-              require('../assets/images/Group.png')
-          }
-          style={styles.midImageBub}
-        />
-        <Image
-          source={
-              require('../assets/images/hobbyist.png')
-          }
-          style={styles.midImage}
-        />
-      </View>
+          <View style={styles.welcomeContainer}>
+         
+          
+         </View>
+         <View style={styles.getStartedContainer}>
+         <Image
+             source={
+                 require('../assets/images/Group.png')
+             }
+             style={styles.midImageBub}
+           />
+         <Image source={
+           require('../assets/images/leaf-doodle-png-2.png')
+       
+         }
+         style={{
+           height:170,
+           width:170,
+         }
+     
+           }/>
+           
+            <Text
+           style={{
+             fontFamily:`nunito-bold`,
+             fontSize:60,
+             color:'#FAE99E',
+           }}>
+             hobbyist
+           </Text>
+         </View>
 
       <View style={styles.buttonContainer}>
       <TouchableHighlight style={styles.touchStyle} onPress={()=>search()}>
+
           <Text style={styles.buttonText}>Search</Text>
         </TouchableHighlight>
       <TouchableHighlight style={styles.touchStyle} onPress={()=>goToEdit()} >
@@ -122,6 +143,13 @@ export default function HomeScreen(props) {
 var widthVal = Dimensions.get('window').width + 10; 
 
 const styles = StyleSheet.create({
+  freeText:{
+    margin:20,
+    width:400,
+    color:`white`,
+    fontSize:20,
+    textAlign:`center`,
+  },
   container: {
     flex: 1,
     backgroundColor: '#202020',
@@ -132,22 +160,25 @@ const styles = StyleSheet.create({
   },
   touchStyle:{
     marginTop:5,
-    marginBottom:35,
     backgroundColor:`#47CEB2`,
-    borderRadius:8,
+    borderRadius:50,
+    marginVertical:20,
     alignItems:`center`,
     justifyContent:`center`,
     padding:5,
-    width:200,
+    width:300,
 
     height:60,
   },
   buttonText:{
     fontSize:25,
+    fontWeight:`bold`,
+    fontFamily:`Nunito`,
     color:`#202020`,
   },
   bottomBubble:{
     alignSelf:`flex-end`,
+    marginTop:90,
   },
   developmentModeText: {
     marginBottom: 20,
@@ -173,7 +204,7 @@ const styles = StyleSheet.create({
   },
   midImageBub:{
     position:`absolute`,
-    marginTop:-25,
+    marginTop:15,
   },
   headerImage: {
     width:widthVal,

@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Image, TextInput, StyleSheet, View, Dimensions, TouchableHighlight, Text, ScrollView } from 'react-native';
 import HomeButton from '../components/HomeButton';
 import axios from 'axios';
+import {LinearGradient} from 'expo-linear-gradient';
 
 export default function SignupScreen(props) {
   const [hobbies, setHobbies] = React.useState([]);
@@ -102,20 +103,15 @@ export default function SignupScreen(props) {
     return (
         <View style={styles.container}>
             <View>
-              <Image
+            <Image
                 source={
-                    require('../assets/images/turqheader.png')
+                  require('../assets/images/oc-1.png')
                 }
                 style={styles.headerImage}
               />
-           
+        
             <HomeButton navigation={props.navigation}/>
-            <Image
-                source={
-                    require('../assets/images/lightturqbub.png')
-                }
-                style={styles.headerBubbles}
-              />
+           
 
             </View>
 
@@ -143,7 +139,7 @@ export default function SignupScreen(props) {
             style={styles.textInput}/>
 
             <TouchableHighlight style={styles.touchStyle} onPress={()=>sendItems()} >
-              <Text style={styles.buttonText}>Done</Text>
+              <Text style={styles.buttonText}>></Text>
             </TouchableHighlight>
             </View>
             <Text style={styles.errorText}>
@@ -165,13 +161,14 @@ const styles = StyleSheet.create({
     color:`#fff`,
   },
     closeText:{
+      fontFamily:'Nunito',
       color:`#FFF`,
       fontSize:30,
       top:0,
  
     },
     midHold:{
-      height:230, 
+      height:280, 
       marginTop:15,
       
       
@@ -182,6 +179,7 @@ const styles = StyleSheet.create({
       marginTop:-40,
     },
     hobbyText:{
+      fontFamily:'Nunito',
       color:`#FFF`,
       fontSize:25,
       textAlign:`center`,
@@ -193,6 +191,7 @@ const styles = StyleSheet.create({
       paddingLeft:83,
     },
     hobbyItem:{
+      
       alignItems:`center`,
       justifyContent:`center`,
       backgroundColor:`#1A1A1A`,
@@ -208,9 +207,11 @@ const styles = StyleSheet.create({
         backgroundColor: '#202020',
     },
     headerImage:{
+  
+      borderBottomLeftRadius:50,
       elevation: -1,
       width:widthVal,
-      height:220,
+      height:245,
       marginTop:-80,
       backgroundColor:`#47CEB2`,
     },
@@ -222,26 +223,27 @@ const styles = StyleSheet.create({
     },
     midText:{
         fontSize:80,
-        marginTop:-84,
-      
-        fontWeight:`bold`,
+        marginTop:-95,
+        fontFamily:'Nunito',
+    
         textAlign:`center`,
         color:`#202020`,
     },
     touchStyle:{
-        marginTop:20,
-        marginBottom:30,
-        backgroundColor:`#FAE99E`,
-        borderRadius:8,
-        alignItems:`center`,
-        justifyContent:`center`,
-        padding:5,
-        width:300,
-        fontSize:100,
-        height:65,
-      },
+      marginTop:20,
+      marginBottom:30,
+      borderRadius:50,
+      alignItems:`center`,
+      backgroundColor:`#FAE99E`,
+      justifyContent:`center`,
+      padding:5,
+      width:70,
+      height:70,
+    },
       buttonText:{
-        fontSize:25,
+        fontSize:30,
+        fontFamily:'Nunito',
+        fontWeight:`bold`,
         color:`#202020`,
       },
       bottomBubble:{
@@ -250,7 +252,8 @@ const styles = StyleSheet.create({
         marginTop:-120,
       },
       textInput:{
-          margin:8,
+          margin:0,
+          fontFamily:'Nunito',
           marginTop:0,
           padding:10,
           backgroundColor:`#47CEB2`,
@@ -258,7 +261,7 @@ const styles = StyleSheet.create({
           fontSize:25,
           width:300,
           height:65,
-          borderRadius:8,
+          borderRadius:10,
           textAlign:`center`,
       },
       buttonContainer:{

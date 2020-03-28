@@ -1,11 +1,13 @@
 import * as React from 'react';
-import { Image, StyleSheet,Dimensions, View, TouchableHighlight, Text, ScrollView, Platform, Linking } from 'react-native';
+import { Image, StyleSheet,Dimensions, View, TouchableHighlight, Text, ScrollView, Linking, Platform} from 'react-native';
 import HomeButton from '../components/HomeButton';
 import Icon from '../components/Icon';
 import axios from 'axios';
 
+
 export default function SearchSetupScreen(props) {
     const [twiKey,setTwiKey] = React.useState(null);
+    const [from, setFrom] = React.useState(null);
 
     const searchAgain = () =>{
         props.navigation.navigate('SearchSetup');
@@ -14,16 +16,10 @@ export default function SearchSetupScreen(props) {
     
     
     const openMsg = () =>{
-      const link = (Platform.OS === 'android')?'sms:1-408-555-1212?body=yourMessage'
-      : 'sms:1-408-555-1212';
-      
-      Linking.canOpenURL(link).then(supported => {
-        if (!supported) {
-          console.log('Unsupported url: ' + url)
-        } else {
-          return Linking.openURL(url)
-        }
-      }).catch(err => console.error('An error occurred', err))
+      const link = (Platform.OS === 'android') ? `sms: ${from}?body=Hey! I just matched with you on Hobbyist, you seem pretty neat!`
+      : `sms:${from}`;
+
+      Linking.openURL(link);
     }
 
     const getKey = async() =>{
@@ -37,6 +33,7 @@ export default function SearchSetupScreen(props) {
       .then((response)=>{
           console.log(response);
           setTwiKey(response.token);
+          setFrom(response.from);
       })
       .catch(()=>{
         console.log('Connection error. Please try again later.');
@@ -68,16 +65,15 @@ export default function SearchSetupScreen(props) {
     return (
         <View style={styles.container}>
             <View>
-               <View style={styles.headerImage}/>
+               <Image 
+               source={
+                 require('../assets/images/oc-1.png')
+               }
+               style={styles.headerImage}/>
                
             <HomeButton navigation={props.navigation}/>
 
-            <Image
-                source={
-                    require('../assets/images/lightturqbub.png')
-                }
-                style={styles.headerBubbles}
-              />
+           
             </View>
 
             <View style={styles.midContain}>
@@ -138,7 +134,7 @@ const styles = StyleSheet.create({
         elevation:1,
         height:50,
         width:60,
-        borderRadius:8,
+        borderRadius:4,
         marginLeft:220,
         padding:8,
         position:`absolute`,
@@ -206,7 +202,7 @@ const styles = StyleSheet.create({
         marginTop:20,
         marginBottom:15,
         backgroundColor:`#47CEB2`,
-        borderRadius:8,
+        borderRadius:4,
         alignItems:`center`,
         justifyContent:`center`,
         padding:5,

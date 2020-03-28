@@ -1,6 +1,6 @@
 import * as React from 'react';
-import MapView from 'react-native-maps';
-import { Alert, Image, StyleSheet,Dimensions, View, TouchableHighlight, Text, Slider, ActivityIndicator } from 'react-native';
+import MapView, {Marker} from 'react-native-maps';
+import { Alert, Image, StyleSheet,Dimensions, View, TouchableHighlight, Text, ActivityIndicator } from 'react-native';
 import HomeButton from '../components/HomeButton';
 import Icon from '../components/Icon';
 import axios from 'axios';
@@ -85,6 +85,15 @@ export default function SearchSetupScreen(props) {
 
     React.useEffect(getLocation, []);
 
+    if(!latitude || !longitude){
+      getLocation();
+      return(
+        <View>
+          
+        </View>
+      )
+    }
+
     return (
         <View style={styles.container}>
             <View>
@@ -99,7 +108,14 @@ export default function SearchSetupScreen(props) {
                 onRegionChange={() => getLocation()}
                 style={
                     styles.mapCircle
-                }/>
+                }
+                >
+                  <Marker
+                  coordinate={{lat:latitude,lng:longitude}}
+                  title="(You)"
+                  />
+
+                  </MapView>
                
             <HomeButton navigation={props.navigation} color="turq"/>
 
@@ -147,26 +163,29 @@ var widthVal = Dimensions.get('window').width + 10;
 
 const styles = StyleSheet.create({
     errorText:{
-     padding:3,
-      fontSize:20,
+      fontSize:22,
+      fontFamily:`Nunito`,
       color:`grey`,
       marginTop:10,
+ 
+      textAlign:`center`,
     },
     midTouch:{
         elevation:1,
         height:50,
         width:60,
-        borderRadius:8,
+        borderRadius:4,
         marginLeft:220,
         padding:8,
         position:`absolute`,
         backgroundColor:`#FAE99E`,
     },
     mapCircle:{
+  
         elevation:-1,
         alignSelf:`center`,
         height:350,
-        borderRadius:8, 
+        borderRadius:4, 
         width:widthVal,
     },
     rangeText:{
@@ -184,6 +203,7 @@ const styles = StyleSheet.create({
     imageBtnStyle:{
     },
     midContain:{
+      
         marginTop:65,
         alignSelf:`center`,
         justifyContent:`center`,
@@ -198,6 +218,7 @@ const styles = StyleSheet.create({
     },
     container: {
       flex:1,
+     
         backgroundColor: '#202020',
         alignContent:`center`,
     },
@@ -220,12 +241,13 @@ const styles = StyleSheet.create({
         textAlign:`center`,
         color:`#1A1A1A`, 
         marginBottom:10,
+        fontFamily:`Nunito`,
     },
     touchStyle:{
         marginTop:40,
         marginBottom:10,
         backgroundColor:`#47CEB2`,
-        borderRadius:8,
+        borderRadius:50,
         alignItems:`center`,
         justifyContent:`center`,
         padding:5,
@@ -233,6 +255,9 @@ const styles = StyleSheet.create({
         height:60,
       },
       buttonText:{
+        fontWeight:`bold`,
+        fontFamily:`Nunito`,
+        fontWeight:`bold`,
         fontSize:25,
         color:`#202020`,
       },

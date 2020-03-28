@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Image, TextInput, StyleSheet, View, Dimensions, TouchableHighlight, Text } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import HomeButton from '../components/HomeButton';
+import {LinearGradient} from 'expo-linear-gradient';
 import axios from 'axios';
 
 export default function SignupScreen(props) {
@@ -36,12 +37,15 @@ export default function SignupScreen(props) {
 
     return (
         <View style={styles.container}>
-          
+          <ScrollView>
             <View>
-              <View
-              
+            <Image
+                source={
+                  require('../assets/images/oc-1.png')
+                }
                 style={styles.headerImage}
               />
+        
 
                
             <HomeButton navigation={props.navigation}  />
@@ -78,14 +82,13 @@ export default function SignupScreen(props) {
             {error}
             </Text>
             </View>
-    
             <Image
                 source={
                     require('../assets/images/bubblesgrey.png')
                 }
                 style={styles.bottomBubble}
             />
-         
+                 </ScrollView>
         </View>
       );
 }
@@ -94,21 +97,29 @@ var widthVal = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
     errorText:{
+      elevation:2,
       margin:10,
+      marginTop:-30,
       padding:20,
       fontSize:20,
       color:`#fff`,
     },
     container: {
         flex: 1,
+
+
         backgroundColor: '#202020',
+     
+        
     },
     headerImage:{
-  
+   
+      borderBottomLeftRadius:75,
         width:widthVal,
-        height:380,
-        marginTop:-250,
-        backgroundColor:`#47CEB2`,
+        height:500,
+        marginTop:-240,
+        backgroundColor:`rgba(71, 206, 178, 0.4)`,
+   
     },
     headerBubbles:{
         width:100,
@@ -117,18 +128,17 @@ const styles = StyleSheet.create({
         marginTop:25,
     },
     midText:{
-        fontSize:80,
-        marginTop:-84,
-        fontWeight:`bold`,
-        marginLeft:5,
-        textAlign:`left`,
+        fontSize:70,
+        marginTop:-74.5,
+        fontWeight:`300`,
+        textAlign:`right`,
         color:`#1A1A1A`,
     },
     touchStyle:{
-        marginTop:30,
+        marginTop:20,
         marginBottom:30,
         backgroundColor:`#FAE99E`,
-        borderRadius:8,
+        borderRadius:50,
         alignItems:`center`,
         justifyContent:`center`,
         padding:5,
@@ -137,20 +147,22 @@ const styles = StyleSheet.create({
       },
       buttonText:{
         fontSize:25,
+        fontWeight:`bold`,
         color:`#202020`,
       },
       bottomBubble:{
         alignSelf:`flex-end`,
+        marginTop:-170,
       },
       textInput:{
           margin:10,
           padding:10,
           backgroundColor:`#1A1A1A`,
           color:`#47CEB2`,
-          fontSize:20,
+          fontSize:25,
           width:300,
-          height:65,
-          borderRadius:8,
+          height:70,
+          borderRadius:10,
       },
       buttonContainer:{
             alignItems: 'center',

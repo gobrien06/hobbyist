@@ -4,19 +4,36 @@ import HomeButton from '../components/HomeButton';
 import * as ImagePicker from 'expo-image-picker';
 import Icon from '../components/Icon';
 import axios from 'axios';
+import { LinearGradient } from 'expo-linear-gradient';
 
-export default function IconSetupScreen({navigation}) {
+export default function IconSetupScreen(props) {
   const [url, setURL]=React.useState(null);
 
-  const submitInfo = () => {
-    //HTTP get request
+  const submitInfo = async() => {
+    const user={
+      icon:url,
+    }
+
+    const config={
+        headers: {
+          'Authorization': 'BEARER ' + props.TOKEN,
+        }
+    }
+
+    await axios.post('http://lahacks-hobbyist.tech:3000/user/update',user,config)
+    .then((response)=>{
+        console.log(response);
+    })
+    .catch(()=>{
+      console.log('Connection error. Please try again later.');
+    })
   }
 
  
 
-  const skip = () =>{
-    //HTTP get request
-    navigation.navigate('SearchSetup');
+  const skip = async() =>{
+    await submitInfo();
+    props.navigation.navigate('SearchSetup');
   }
 
   const takePicture = async () => {
@@ -27,7 +44,7 @@ export default function IconSetupScreen({navigation}) {
     }
 
     let cameraResult = await ImagePicker.launchCameraAsync();
-    setIcon(cameraResult);
+    setURL(cameraResult);
     submitInfo(cameraResult);
   }
 
@@ -38,18 +55,20 @@ export default function IconSetupScreen({navigation}) {
         return;
     }   
     let pickerResult = await ImagePicker.launchImageLibraryAsync();
-    setIcon(pickerResult);
+    setURL(pickerResult);
     submitInfo(pickerResult);
   }
 
     return (
         <View style={styles.container}>
-            <View style={styles.headerImage}/>
+            <Image 
+              source={
+                require('../assets/images/greyabstract.png')
+              }
+            style={styles.headerImage}/>
            
-            <HomeButton navigation={navigation} />
-            <Text style={styles.midText}>
-            Icon.
-            </Text>
+            <HomeButton navigation={props.navigation}  color="turq"/>
+          
             <View style={styles.midContain}>
             <Image 
             source={
@@ -83,16 +102,10 @@ export default function IconSetupScreen({navigation}) {
             </TouchableHighlight>
 
             <TouchableHighlight style={styles.touchStyle} onPress={()=>skip()} >
-              <Text style={styles.buttonText}>Done</Text>
+              <Text style={styles.buttonText}>></Text>
             </TouchableHighlight>
             </View>
-         
-            <Image
-                source={
-                    require('../assets/images/bottomturqbub.png')
-                }
-                style={styles.bottomBubble}
-            />
+       
         </View>
       );
 }
@@ -113,16 +126,19 @@ const styles = StyleSheet.create({
         alignContent:`center`,  
     },
     container: {
+    
       flex:1,
-        backgroundColor: '#47CEB2',
+        backgroundColor: '#878787',
         alignContent:`center`,
     },
     headerImage:{
+        marginTop:-80,
         elevation: -1,
         width:widthVal,
-        height:250,
+        height:280,
         marginTop:-80,
-        backgroundColor:`#FFF`,
+        backgroundColor:`#202020`,
+        marginBottom:40,
     },
     headerBubbles:{
         width:100,
@@ -131,28 +147,29 @@ const styles = StyleSheet.create({
         marginTop:25,
     },
     midText:{
-        fontSize:110,
-        marginTop:-115,
-        fontWeight:`bold`,
-        textAlign:`left`,
-        marginLeft:5,
-        color:`#47CEB2`,
-        marginBottom:20,
-    },
+        fontFamily:'Nunito',
+        fontSize:95,
+        marginTop:-145,
+        textAlign:`right`,
+        marginRight:5,
+        color:`#d3d3d3`,
+      },
     touchStyle:{
-        marginTop:30,
+        marginTop:20,
         marginBottom:30,
-        backgroundColor:`#202020`,
-        borderRadius:8,
+        backgroundColor:`#d3d3d3`,
+        borderRadius:50,
         alignItems:`center`,
         justifyContent:`center`,
         padding:5,
-        width:220,
-        height:60,
+        width:70,
+        height:70,
       },
       buttonText:{
-        fontSize:25,
-        color:`#47CEB2`,
+        fontFamily:'Nunito',
+        fontWeight:`bold`,
+        fontSize:30,
+        color:`#878787`,
       },
       bottomBubble:{
         elevation:-1,

@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
         width:45,
         borderRadius:8,
         margin:10,
+        marginTop:30,
     },
     iconHome:{
         elevation: 1,

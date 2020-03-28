@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { Platform, StatusBar, StyleSheet, View } from 'react-native';
-import { SplashScreen } from 'expo';
+import { Platform, StatusBar, StyleSheet, View,Text } from 'react-native';
 import * as Font from 'expo-font';
+
+import { SplashScreen } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -22,6 +23,14 @@ const Stack = createStackNavigator();
 
 
 export default function App(props) {
+  Font.loadAsync({
+    'nunito-extra-bold':require('./assets/fonts/Nunito-ExtraBold.ttf'),
+    'Nunito':require('./assets/fonts/Nunito-Regular.ttf'),
+    'nunito-light':require('./assets/fonts/Nunito-Light.ttf'),
+    'nunito-bold': require('./assets/fonts/Nunito-Bold.ttf'),
+  });
+  
+
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
   const [initialNavigationState, setInitialNavigationState] = React.useState();
   const containerRef = React.useRef();
