@@ -26,7 +26,7 @@ export default function LogIn(props) {
           if(response.status == 200){
             success=true;
           }
-          console.log(result);
+          console.log(response);
         })
       .catch(()=>{
         setError('Network error. Please try again.');

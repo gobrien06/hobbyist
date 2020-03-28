@@ -92,9 +92,6 @@ export default function HomeScreen(props) {
       </View>
 
       <View style={styles.buttonContainer}>
-      <TouchableHighlight style={styles.touchStyle} onPress={()=>signUp()}>
-        <Text style={styles.buttonText}>Sign Up</Text>
-      </TouchableHighlight>
       <TouchableHighlight style={styles.touchStyle} onPress={()=>goToEdit()} >
               <Text style={styles.buttonText}>Edit</Text>
       </TouchableHighlight>

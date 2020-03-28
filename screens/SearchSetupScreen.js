@@ -2,45 +2,44 @@ import * as React from 'react';
 import MapView from 'react-native-maps';
 import { Alert, Image, StyleSheet,Dimensions, View, TouchableHighlight, Text, Slider } from 'react-native';
 import HomeButton from '../components/HomeButton';
+import axios from 'axios';
 
-export default function SearchSetupScreen({navigation}) {
+export default function SearchSetupScreen(props) {
   const [range,setRange] = React.useState(20);
   const [longitude, setLongitude] = React.useState();
   const [latitude,setLatitude] = React.useState();
+  const [icon, setIcon] = React.useState('https://wompampsupport.azureedge.net/fetchimage?siteId=7575&v=2&jpgQuality=100&width=700&url=https%3A%2F%2Fi.kym-cdn.com%2Fentries%2Ficons%2Fmobile%2F000%2F028%2F232%2Fhamster.jpg');
 
   const searchStart = async() =>{
+    searchMatch();
+    submitInfo();
+  }
+
+  const searchMatch = async() =>{
 
   }
 
   const submitInfo = async() => {
-    let success = false;
     const user={
-      username:usernm,
-      password:password,
+      lat:latitude,
+      lon:longitude,
+      //need to include range
     }
+    const config = {
+      headers: {
+        'Authorization': 'BEARER ' + props.TOKEN,
+      }
+    }
+
     console.log(user);
-    if(!usernm || !password){
-      setError('Missing a field. Please enter all fields before continuing.');
-      return;
-    }
-   await axios.post('http://lahacks-hobbyist.tech:3000/auth',user)
+  
+   await axios.post('http://lahacks-hobbyist.tech:3000/users/geo',user,config)
     .then((response)=>{
-        props.route.params.setTOKEN(response.data.token);
-        if(response.status == 200){
-          success=true;
-        }
-        console.log(result);
+        console.log(response);
       })
-    .catch(()=>{
-      setError('Network error. Please try again.');
+    .catch((error)=>{
+      console.log(error);
     })
-
-    if(!success){
-      setError("Credentials incorrect. Please try again.")
-      return;
-    }
-
-      props.navigation.navigate('MatchFound');
   }
 
   const getLocation = () =>{
@@ -61,12 +60,30 @@ export default function SearchSetupScreen({navigation}) {
     return;
   }
    
+    const getIcon=async()=>{
+      await getLocation();
 
-    React.useEffect(()=>
-    {      
-         getLocation();
+      const config = {
+        headers: {
+          'Authorization': 'BEARER ' + props.TOKEN,
+        }
+      }
 
-    } )
+      await axios.post('http://lahacks-hobbyist.tech:3000/user/icon',config)
+      .then((response)=>{
+          console.log(response);
+          if(response.data.icon){
+            setIcon(response.data.icon);
+          }
+        
+        })
+      .catch((error)=>{
+        console.log(error);
+      })
+      
+    }
+
+    React.useEffect(getLocation, []);
 
     return (
         <View style={styles.container}>
@@ -77,6 +94,7 @@ export default function SearchSetupScreen({navigation}) {
                     longitude:longitude,
                     latitudeDelta: 0.0922,
                     longitudeDelta: 0.0421,
+                    onRegionChange:{getLocation}
                 }}
                 onRegionChange={() => getLocation()}
                 zoom={range}
@@ -84,7 +102,7 @@ export default function SearchSetupScreen({navigation}) {
                     styles.mapCircle
                 }/>
                
-            <HomeButton navigation={navigation} color="turq"/>
+            <HomeButton navigation={props.navigation} color="turq"/>
 
             </View>
 

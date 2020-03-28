@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { Image, TextInput, StyleSheet, View, Dimensions, TouchableHighlight, Text, ScrollView } from 'react-native';
 import HomeButton from '../components/HomeButton';
-
+import axios from 'axios';
 
 export default function SignupScreen(props) {
   const [hobbies, setHobbies] = React.useState([]);
   const [formValue,setFormValue] = React.useState('');
+  const [error,setError] = React.useState('');
   const textInput = React.createRef();
   
   const submitInfo = () => {
@@ -23,36 +24,55 @@ export default function SignupScreen(props) {
   }
 
   const sendItems = async() =>{
-    let success = false;
-    const user={
-      TOKEN:props.TOKEN,
-      hobbies:hobbies,
+    console.log("sending");
+    const config={
+      headers: {
+        'Authorization': 'BEARER ' + props.TOKEN,
+      }
     }
-    //console.log(user);
-    if(!hobbies){
+    const user={
+      hobby:hobbies,
+    }
+    if(hobbies===[]){
       setError('You have no hobbies!');
       return;
     }
-   await axios.post('http://lahacks-hobbyist.tech:3000/users/update',user)
+
+   await axios.post('http://lahacks-hobbyist.tech:3000/users/update',user,config)
     .then((response)=>{
-        props.route.params.setTOKEN(response.data.token);
-        if(response.status == 200){
-          success=true;
-        }
-        console.log(result);
+        console.log(response);
       })
     .catch(()=>{
       setError('Network error. Please try again.');
     })
-
-    if(!success){
-      setError("Credentials incorrect. Please try again.")
-      return;
-    }
-
-      props.navigation.navigate('SearchSetup');
+  
     props.navigation.navigate('IconSetup');
   }
+
+  const getInitial= async()=>{
+    const config={
+      headers: {
+        'Authorization': 'BEARER ' + props.TOKEN,
+      }
+    }
+    
+    await axios.get('http://lahacks-hobbyist.tech:3000/users/hobby',config)
+    .then((response)=>{
+      if(response.data.hobby){
+        setHobbies(response.data.hobby);
+      }
+      console.log(response);
+    })
+    .catch(()=>{
+      setError('Network error. Could not fetch hobbies.');
+    })
+  }
+
+  React.useEffect(()=>
+    {
+      getInitial();
+    },[]
+  )
 
   const generateItem = () =>{
       let items = [ ];
@@ -89,7 +109,7 @@ export default function SignupScreen(props) {
                 style={styles.headerImage}
               />
            
-            <HomeButton navigation={navigation}/>
+            <HomeButton navigation={props.navigation}/>
             <Image
                 source={
                     require('../assets/images/lightturqbub.png')
@@ -126,6 +146,9 @@ export default function SignupScreen(props) {
               <Text style={styles.buttonText}>Done</Text>
             </TouchableHighlight>
             </View>
+            <Text style={styles.errorText}>
+            {error}
+            </Text>
                 
            
         </View>
@@ -135,6 +158,12 @@ export default function SignupScreen(props) {
 var widthVal = Dimensions.get('window').width + 10; 
 
 const styles = StyleSheet.create({
+  errorText:{
+    margin:10,
+    padding:20,
+    fontSize:20,
+    color:`#fff`,
+  },
     closeText:{
       color:`#FFF`,
       fontSize:30,
