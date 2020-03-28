@@ -2,31 +2,49 @@ import * as React from 'react';
 import { Image, TextInput, StyleSheet, View, Dimensions, TouchableHighlight, Text } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import HomeButton from '../components/HomeButton';
+import axios from 'axios';
 
-export default function SignupScreen({navigation}) {
+export default function SignupScreen(props) {
+    const [usernm,setUser] = React.useState(null);
+    const [password,setPassword] = React.useState(null);
+    const [phone,setPhone] = React.useState(null);
+    const [error, setError] = React.useState('');
+ 
 
-    const submitInfo = () => {
-        navigation.navigate('Hobbies');
+    const submitInfo = async () => {
+      const user={
+        username:usernm,
+        password:password,
+        phone:phone,
+      }
+      //console.log(user);
+      if(!usernm || !password || !phone){
+        setError('Missing a field. Please enter all fields before continuing.');
+        return;
+      }
+     await axios.post('http://lahacks-hobbyist.tech:3000/users',user)
+      .then((response)=>{
+          props.route.params.setTOKEN(response.data.token);
+          console.log(response.data.token);
+        })
+      .catch(()=>{
+        setError("Network error. Try again.")
+      })
+      console.log("sent");
+      props.navigation.navigate('Hobbies');
     }
+
     return (
         <View style={styles.container}>
-            <ScrollView>
+          
             <View>
-              <Image
-                source={
-                    require('../assets/images/whiteheader.png')
-                }
+              <View
+              
                 style={styles.headerImage}
               />
 
-            <Image
-                source={
-                    require('../assets/images/lightgreybubbles.png')
-                }
-                style={styles.headerBubbles}
-              />
                
-            <HomeButton navigation={navigation}  color="turq"/>
+            <HomeButton navigation={props.navigation}  />
 
             </View>
 
@@ -39,18 +57,26 @@ export default function SignupScreen({navigation}) {
             <TextInput
             secureTextEntry={false}
             placeholder="Username"
-            style={styles.textInput}/>
+            style={styles.textInput}
+            onChangeText={(text) => setUser(text)}/>
             <TextInput
             secureTextEntry={true}
             placeholder="Password"
-            style={styles.textInput}/>
+            style={styles.textInput}
+            onChangeText={(text) => setPassword(text)}
+            />
             <TextInput
             secureTextEntry={false}
             placeholder="Phone"
-            style={styles.textInput}/>
+            style={styles.textInput}
+            onChangeText={(text) => setPhone(text)}
+            />
             <TouchableHighlight style={styles.touchStyle} onPress={()=>submitInfo()} >
               <Text style={styles.buttonText}>Sign Up</Text>
             </TouchableHighlight>
+            <Text style={styles.errorText}>
+            {error}
+            </Text>
             </View>
     
             <Image
@@ -59,7 +85,7 @@ export default function SignupScreen({navigation}) {
                 }
                 style={styles.bottomBubble}
             />
-            </ScrollView>
+         
         </View>
       );
 }
@@ -67,6 +93,12 @@ export default function SignupScreen({navigation}) {
 var widthVal = Dimensions.get('window').width; 
 
 const styles = StyleSheet.create({
+    errorText:{
+      margin:10,
+      padding:20,
+      fontSize:20,
+      color:`#fff`,
+    },
     container: {
         flex: 1,
         backgroundColor: '#202020',
@@ -74,9 +106,9 @@ const styles = StyleSheet.create({
     headerImage:{
   
         width:widthVal,
-        height:400,
+        height:380,
         marginTop:-250,
-        backgroundColor:`#FFF`,
+        backgroundColor:`#47CEB2`,
     },
     headerBubbles:{
         width:100,
@@ -86,7 +118,7 @@ const styles = StyleSheet.create({
     },
     midText:{
         fontSize:80,
-        marginTop:-82,
+        marginTop:-84,
         fontWeight:`bold`,
         marginLeft:5,
         textAlign:`left`,
@@ -124,6 +156,6 @@ const styles = StyleSheet.create({
       buttonContainer:{
             alignItems: 'center',
             justifyContent: 'center', 
-          marginTop:25,
+          marginTop:5,
       }
 });

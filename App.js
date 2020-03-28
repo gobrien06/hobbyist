@@ -26,7 +26,7 @@ export default function App(props) {
   const [initialNavigationState, setInitialNavigationState] = React.useState();
   const containerRef = React.useRef();
   const { getInitialState } = useLinking(containerRef);
-  const [isLoggedIn, setLogIn] = React.useState(false);
+  const [TOKEN, setTOKEN] = React.useState(null);
 
   // Load any resources or data that we need prior to rendering the app
   React.useEffect(() => {
@@ -62,12 +62,18 @@ export default function App(props) {
         {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
         <NavigationContainer ref={containerRef} initialState={initialNavigationState}>
           <Stack.Navigator screenOptions={{headerShown: false,}}>
-            <Stack.Screen name="Home" component={HomeScreen} logIn={isLoggedIn}/>
-            <Stack.Screen name="Signup" component={SignupScreen} />
-            <Stack.Screen name="Login" component={LoginScreen} logIn={isLoggedIn}/>
-            <Stack.Screen name="Hobbies" component={HobbiesScreen} />
+            <Stack.Screen name="Home">
+            {props => <HomeScreen {...props} TOKEN={TOKEN} setTOKEN={setTOKEN}/>}
+            </Stack.Screen> 
+            <Stack.Screen name="Signup" component={SignupScreen}/>
+            <Stack.Screen name="Login" component={LoginScreen}/>
+            <Stack.Screen name="Hobbies">
+            {props => <HobbiesScreen {...props} TOKEN={TOKEN}/>}
+            </Stack.Screen>
             <Stack.Screen name="IconSetup" component={IconSetupScreen} />
-            <Stack.Screen name="SearchSetup" component={SearchSetupScreen} />
+            <Stack.Screen name="SearchSetup">
+              {props => <SearchSetupScreen {...props} TOKEN={TOKEN}/>}
+            </Stack.Screen>
             <Stack.Screen name="MatchScreen" component={MatchFoundScreen} />
           </Stack.Navigator>
         </NavigationContainer>

@@ -2,13 +2,13 @@ import * as React from 'react';
 import { Image, StyleSheet, TouchableHighlight } from 'react-native';
 
 
-export default function HomeButton({navigation},color){
+export default function HomeButton(props){
     const goHome = () => {
-        console.log("color: " + color);
-        navigation.navigate("Home");
+        
+        props.navigation.navigate("Home");
     }
 
-    if(color === "turq"){
+    if(props.color === "turq"){
         return(
             <TouchableHighlight onPress={() => goHome()} style={styles.iconHome}>
                     <Image

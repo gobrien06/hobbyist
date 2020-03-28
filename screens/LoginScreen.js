@@ -2,12 +2,44 @@ import * as React from 'react';
 import { Image, TextInput, StyleSheet, View, Dimensions, TouchableHighlight, Text } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import HomeButton from '../components/HomeButton';
+import axios from 'axios';
 
-export default function LogIn({navigation}) {
+export default function LogIn(props) {
+    const [usernm,setUserNM] = React.useState(null);
+    const [password, setPassword] = React.useState(null);
+    const [error, setError] = React.useState(null);
 
-    const submitInfo = () => {
-        navigation.navigate('SearchSetup');
+    const submitInfo = async() => {
+      let success = false;
+      const user={
+        username:usernm,
+        password:password,
+      }
+      //console.log(user);
+      if(!usernm || !password){
+        setError('Missing a field. Please enter all fields before continuing.');
+        return;
+      }
+     await axios.post('http://lahacks-hobbyist.tech:3000/auth',user)
+      .then((response)=>{
+          props.route.params.setTOKEN(response.data.token);
+          if(response.status == 200){
+            success=true;
+          }
+          console.log(result);
+        })
+      .catch(()=>{
+        setError('Network error. Please try again.');
+      })
+
+      if(!success){
+        setError("Credentials incorrect. Please try again.")
+        return;
+      }
+
+        props.navigation.navigate('SearchSetup');
     }
+
     return (
         <View style={styles.container}>
             <ScrollView>
@@ -16,14 +48,8 @@ export default function LogIn({navigation}) {
                 style={styles.headerImage}
               />
 
-            <Image
-                source={
-                    require('../assets/images/lightturqbub.png')
-                }
-                style={styles.headerBubbles}
-              />
-               
-            <HomeButton navigation={navigation}  color="turq"/>
+        
+            <HomeButton navigation={props.navigation}  />
 
             </View>
 
@@ -36,22 +62,30 @@ export default function LogIn({navigation}) {
             <TextInput
             secureTextEntry={false}
             placeholder="Username"
-            style={styles.textInput}/>
+            style={styles.textInput}
+            onChangeText={(text) => setUserNM(text)}
+            />
+            
+            
             <TextInput
             secureTextEntry={true}
             placeholder="Password"
+            onChangeText={(text) => setPassword(text)}
             style={styles.textInput}/>
             <TouchableHighlight style={styles.touchStyle} onPress={()=>submitInfo()} >
               <Text style={styles.buttonText}>Login</Text>
             </TouchableHighlight>
             </View>
-    
+            <Text style={styles.errorText}>
+            {error}
+            </Text>
             <Image
                 source={
                     require('../assets/images/bubblesgrey.png')
                 }
                 style={styles.bottomBubble}
             />
+        
             </ScrollView>
         </View>
       );
@@ -60,6 +94,12 @@ export default function LogIn({navigation}) {
 var widthVal = Dimensions.get('window').width; 
 
 const styles = StyleSheet.create({
+    errorText:{
+      margin:10,
+      padding:20,
+      fontSize:20,
+      color:`#fff`,
+    },
     container: {
         flex: 1,
         backgroundColor: '#202020',
@@ -67,7 +107,7 @@ const styles = StyleSheet.create({
     headerImage:{
   
         width:widthVal,
-        height:400,
+        height:380,
         marginTop:-250,
         backgroundColor:`#47CEB2`,
     },
@@ -104,6 +144,7 @@ const styles = StyleSheet.create({
       },
       bottomBubble:{
         alignSelf:`flex-end`,
+        marginTop:50,
       },
       textInput:{
           margin:10,

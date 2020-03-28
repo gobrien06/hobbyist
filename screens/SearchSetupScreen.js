@@ -7,8 +7,40 @@ export default function SearchSetupScreen({navigation}) {
   const [range,setRange] = React.useState(20);
   const [longitude, setLongitude] = React.useState();
   const [latitude,setLatitude] = React.useState();
-  const submitInfo = () => {
-    //HTTP get request
+
+  const searchStart = async() =>{
+
+  }
+
+  const submitInfo = async() => {
+    let success = false;
+    const user={
+      username:usernm,
+      password:password,
+    }
+    console.log(user);
+    if(!usernm || !password){
+      setError('Missing a field. Please enter all fields before continuing.');
+      return;
+    }
+   await axios.post('http://lahacks-hobbyist.tech:3000/auth',user)
+    .then((response)=>{
+        props.route.params.setTOKEN(response.data.token);
+        if(response.status == 200){
+          success=true;
+        }
+        console.log(result);
+      })
+    .catch(()=>{
+      setError('Network error. Please try again.');
+    })
+
+    if(!success){
+      setError("Credentials incorrect. Please try again.")
+      return;
+    }
+
+      props.navigation.navigate('MatchFound');
   }
 
   const getLocation = () =>{
@@ -29,14 +61,6 @@ export default function SearchSetupScreen({navigation}) {
     return;
   }
    
-  const goToEdit=()=>{
-      navigation.navigate('Hobbies');
-  }
-
-    const searchStart = () =>{
-        navigation.navigate('MatchScreen');
-        submitInfo();
-    }
 
     React.useEffect(()=>
     {      
@@ -65,7 +89,7 @@ export default function SearchSetupScreen({navigation}) {
             </View>
 
             <Text style={styles.midText}>
-            Fine tune your search.
+         
             </Text>
             <View style={styles.midContain}>
             <Image 
@@ -78,11 +102,7 @@ export default function SearchSetupScreen({navigation}) {
             style={
                 styles.iconStyle
             }
-            />
-            <TouchableHighlight style={styles.midTouch} onPress={()=>goToEdit()} >
-              <Text style={styles.buttonText}>Edit</Text>
-            </TouchableHighlight>
-        
+            />    
             </View>
           
 
@@ -140,7 +160,7 @@ const styles = StyleSheet.create({
     imageBtnStyle:{
     },
     midContain:{
-        marginTop:10,
+        marginTop:65,
         alignSelf:`center`,
         justifyContent:`center`,
         alignContent:`center`,  

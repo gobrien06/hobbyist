@@ -51,9 +51,6 @@ export default function SearchSetupScreen({navigation}) {
               />
             </View>
 
-            <Text style={styles.midText}>
-            
-            </Text>
             <View style={styles.midContain}>
             <Image 
             source={
@@ -79,7 +76,7 @@ export default function SearchSetupScreen({navigation}) {
             </View>
 
             <View style={styles.buttonContainer}>
-            <TouchableHighlight style={styles.touchStyle} onPress={()=>searchAgain()} >
+            <TouchableHighlight style={styles.touchStyle} onPress={()=>searchAgain()}>
               <Text style={styles.buttonText}>Search Again</Text>
             </TouchableHighlight>
     
@@ -99,7 +96,7 @@ var widthVal = Dimensions.get('window').width + 10;
 const styles = StyleSheet.create({
     scrollText:{
       color:`#FAE99E`,
-      fontSize:30,
+      fontSize:25,
 
     },
     scrollSettings:{
@@ -125,7 +122,7 @@ const styles = StyleSheet.create({
     },
     hobbiesText:{
       color:`#FAE99E`,
-      fontSize:25,
+      fontSize:20,
     },
     slider:{
         height:50,
@@ -137,7 +134,7 @@ const styles = StyleSheet.create({
     imageBtnStyle:{
     },
     midContain:{
-        marginTop:10,
+        marginTop:-90,
         alignSelf:`center`,
         justifyContent:`center`,
         alignContent:`center`,  
@@ -195,6 +192,7 @@ const styles = StyleSheet.create({
         alignSelf:`flex-end`,
       },
       buttonContainer:{
+      
         alignItems: 'center',
         justifyContent: 'center', 
 

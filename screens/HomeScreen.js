@@ -4,15 +4,25 @@ import { ScrollView } from 'react-native-gesture-handler';
 
 import { MonoText } from '../components/StyledText';
 
-export default function HomeScreen({navigation}) {
+export default function HomeScreen(props) {
   const signUp = () =>{
-    navigation.navigate('Signup');
+    props.navigation.navigate('Signup', {setTOKEN:props.setTOKEN});
   }
 
   const login=()=>{
-    navigation.navigate('Login');
+    props.navigation.navigate('Login',{setTOKEN:props.setTOKEN});
   }
 
+  const logout=()=>{
+    props.setTOKEN(null);
+  }
+
+  const goToEdit=()=>{
+    props.navigation.navigate('Hobbies',{TOKEN:props.TOKEN});
+  }
+
+
+  if(!props.TOKEN){
   return (
     <View style={styles.container}>
         <View style={styles.welcomeContainer}>
@@ -55,6 +65,54 @@ export default function HomeScreen({navigation}) {
         />
     </View>
   );
+  }
+  return(
+      <View style={styles.container}>
+      <View style={styles.welcomeContainer}>
+        <Image
+          source={
+              require('../assets/images/group2.png')
+          }
+          style={styles.headerImage}
+        />
+      </View>
+      <View style={styles.getStartedContainer}>
+        <Image
+          source={
+              require('../assets/images/Group.png')
+          }
+          style={styles.midImageBub}
+        />
+        <Image
+          source={
+              require('../assets/images/hobbyist.png')
+          }
+          style={styles.midImage}
+        />
+      </View>
+
+      <View style={styles.buttonContainer}>
+      <TouchableHighlight style={styles.touchStyle} onPress={()=>signUp()}>
+        <Text style={styles.buttonText}>Sign Up</Text>
+      </TouchableHighlight>
+      <TouchableHighlight style={styles.touchStyle} onPress={()=>goToEdit()} >
+              <Text style={styles.buttonText}>Edit</Text>
+      </TouchableHighlight>
+      <TouchableHighlight style={styles.touchStyle} onPress={()=>logout()}>
+        <Text style={styles.buttonText}>Logout</Text>
+      </TouchableHighlight>
+      
+      </View>
+
+      <Image
+          source={
+              require('../assets/images/bubblesgrey.png')
+          }
+          style={styles.bottomBubble}
+      />
+  </View>
+  )
+
 }
 
 
@@ -78,7 +136,7 @@ const styles = StyleSheet.create({
     justifyContent:`center`,
     padding:5,
     width:200,
-    fontSize:100,
+
     height:60,
   },
   buttonText:{

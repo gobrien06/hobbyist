@@ -48,7 +48,7 @@ export default function IconSetupScreen({navigation}) {
         <View style={styles.container}>
             <View style={styles.headerImage}/>
            
-            <HomeButton navigation={navigation} color="turq"/>
+            <HomeButton navigation={navigation} />
             <Text style={styles.midText}>
             Icon.
             </Text>
