@@ -208,7 +208,7 @@ const styles = StyleSheet.create({
     },
     headerImage:{
   
-      borderBottomLeftRadius:70,
+      
       elevation: -1,
       width:widthVal,
       height:245,
@@ -225,7 +225,6 @@ const styles = StyleSheet.create({
         fontSize:80,
         marginTop:-85,
         fontFamily:'Nunito',
-    
         textAlign:`center`,
         color:`#202020`,
     },

@@ -83,7 +83,7 @@ export default function SearchSetupScreen(props) {
             <Icon url={props.icon}/>
             </View>
 
-            <View style={{alignContent:`center`,justifyContent:`center`,textAlign:`center`, marginVertical:20,marginLeft:95}}>
+            <View style={{alignContent:`center`,justifyContent:`center`,textAlign:`center`, }}>
             <Text style={styles.rangeText}>You and {props.route.params.username} like:</Text>
             <View style={styles.scrollSettings}>
               <ScrollView>
@@ -112,15 +112,17 @@ var widthVal = Dimensions.get('window').width + 10;
 
 const styles = StyleSheet.create({
     scrollText:{
+      fontFamily:`Nunito`,
+
       color:`#FAE99E`,
       fontSize:25,
 
     },
     scrollSettings:{
       height:100,
-      textAlign:`center`,
       width:200,
-      marginLeft:55,
+      alignSelf:`flex-end`,
+      marginRight:5,
     },
     midTouch:{
         elevation:1,
@@ -134,11 +136,15 @@ const styles = StyleSheet.create({
     },
 
     rangeText:{
+      fontFamily:`Nunito`,
+      textAlign:`center`,
       marginTop:30,
         color:`#47CEB2`,
-        fontSize:30,
+        fontSize:34,
     },
     hobbiesText:{
+      fontFamily:`Nunito`,
+
       color:`#FAE99E`,
       fontSize:20,
     },
@@ -184,6 +190,7 @@ const styles = StyleSheet.create({
     },
     midText:{
         fontSize:60,
+        fontFamily:`Nunito`,
         marginTop:-170,
         fontWeight:`bold`,
         textAlign:`center`,
@@ -194,7 +201,7 @@ const styles = StyleSheet.create({
         marginTop:20,
         marginBottom:15,
         backgroundColor:`#47CEB2`,
-        borderRadius:4,
+        borderRadius:50,
         alignItems:`center`,
         justifyContent:`center`,
         padding:5,
@@ -202,6 +209,8 @@ const styles = StyleSheet.create({
         height:60,
       },
       buttonText:{
+        fontFamily:`Nunito`,
+        fontWeight:`bold`,
         fontSize:25,
         color:`#202020`,
       },

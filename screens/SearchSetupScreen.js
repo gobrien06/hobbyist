@@ -21,7 +21,7 @@ export default function SearchSetupScreen(props) {
   }
 
   const searchMatch = async() =>{
-    if(nearby.hobby){
+    if(nearby[0].hobby){
       console.log(nearby[0].hobby);
       props.navigation.navigate('MatchScreen',{hobbies:nearby[0].hobby,username:nearby[0].username,icon:nearby[0].icon,TOKEN:props.TOKEN,pending:nearby[0].pending_channel});
     }
@@ -52,13 +52,15 @@ export default function SearchSetupScreen(props) {
         if(response.data.nearby){
           setNearby(response.data.nearby);
         }
-        console.log(response.data.nearby);
+        console.log(response.data.nearby[0].hobby);
       })
     .catch((error)=>{
       console.log(error);
     })
 
-    if(nearby==[]){
+    console.log('nearby'+nearby[0].hobby);
+
+    if(nearby[0].hobby==[]){
       setNearby(null);
     }
 
@@ -83,7 +85,7 @@ export default function SearchSetupScreen(props) {
   }
    
 
-    React.useEffect(getLocation, []);
+    React.useEffect(getLocation,[]);
 
     if(!latitude || !longitude){
       getLocation();
