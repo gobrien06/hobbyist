@@ -3,7 +3,7 @@ var jwt = require('jsonwebtoken');
 var crypto = require('crypto');
 var bcrypt = require('bcrypt');
 
-var accessTokenSecret = crypto.randomBytes(64).toString('hex');
+var accessTokenSecret = 'test';//crypto.randomBytes(64).toString('hex');
 
 const authenticateJWT = (req, res, next) => {
     const authHeader = req.headers.authorization;

@@ -34,37 +34,49 @@ function updateUser(req, res) {
 }
 
 
-function getMatchingUsers(req, res, nearby) {
-    knex('users').select('hobby').where({username: req.user}).then(hobby => {     
-        hobby = hobby[0]['hobby'];
+async function getMatchingUsers(req, res, nearby) {
+    knex('users').select(['hobby', 'connected_members']).where({username: req.user}).then(user_info => {     
+        let hobby = user_info[0]['hobby'];
         if(hobby) {
-            console.log(hobby);
-            knex('users').select(['username', 'hobby']).where(knex.raw("\"username\" in ('" + nearby.map(n => n.username).join("','") + "') and hobby && '{\"" + hobby.join("\",\"") + "\"}'")).then(result => {
-                for(let i = 0; i < result.length; ++i) {
+            //Match hobbies
+            knex('users').select(['username', 'hobby']).where(knex.raw("\"username\" not in ('" + user_info[0]['connected_members'].join("','") + "') and \"username\" in ('" + nearby.map(n => n.username).join("','") + "') and hobby && '{\"" + hobby.join("\",\"") + "\"}'")).then(result => {
+                let promises = [];
+                console.log(result);
+                //Create channel for each match
+                for(let i = 0; i < result.length; i++) {
                     let members = [req.user, result[i]['username']];
-                    knex('channels').insert({members: [], pending_members: members}).returning('channelid').then(result => {
-                        result[i]['pending_channel'] = result[0];
+                    promises.push(knex('channels').insert({members: [], pending_members: members}).returning('channelid').then(channelId => {
+                        result[i]['pending_channel'] = channelId[0];
                         result[i]['hobby'] = result[i]['hobby'].filter(value => hobby.includes(value));
-                        console.log(result);
-                        console.log(members[0]);
-                        for(let i = 0; i < members.length; ++i) {
-                            let user = members[i];
+                        console.log('members' + members.length);
+                        //Add matches to each others blacklist
+                        for(let k = 0; k < members.length; k++) {
+                            console.log('k ' + k);
+                            let user = members[k];         
+                            console.log(members.filter((e, index) => {return index != k}));  
                             knex('users').update({
-                                pending_channels: knex.raw("array_append(pending_channels, ?)", result[0])
-                            }).where({username: user}).then(result => {
+                                pending_channels: knex.raw("array_append(pending_channels, ?)", channelId[0]),
+                                connected_members: knex.raw("connected_members || '{\"" + members.filter((e, index) => {return index != k}).join("','") + "\"}'")
+                            }).where({username: user}).then(result => {  
                                 console.log(result);
                             }, result => {
                                 console.log(result);
                             });
-                        }
+                            console.log(members);
+                        }                
+                        
                     }, result => {
                         console.log(result)
-                    });                        
+                    })); 
                 }
-                res.json({nearby: result});
+                Promise.all(promises).then(() => {
+                    console.log('rea');
+                    console.log(result);
+                    res.json(result);
+                });
             }, result => {
                 console.log(result);
-                res.json({nearby: []});
+                res.json([]);
             });
         } else {
             res.json({nearby: []});

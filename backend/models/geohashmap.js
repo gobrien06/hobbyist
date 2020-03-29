@@ -24,7 +24,7 @@ class GeohashMap {
     }
     
     add(user) {
-        let hash = geohash.encode(user.lat, user.lon);
+        let hash = geohash.encode(user.lat, user.lon, 7);
         console.log(this.geoMap.get(hash));
         let users = this.geoMap.get(hash);
         if(users) {
@@ -44,7 +44,6 @@ class GeohashMap {
                         nearUsers.splice(i, 1);
                         console.log('culled');
                     } else {
-                        console.log('else');
                         if(user.username == nearUsers[i].username) {
                             continue;
                         }
