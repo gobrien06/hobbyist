@@ -47,8 +47,10 @@ export default function SearchSetupScreen(props) {
     }
     await axios.post('http://lahacks-hobbyist.tech:3000/users/geo',user,config)
     .then((response)=>{
-      setNearby(nearby => Object.assign(nearby,response.data.nearby[0]));
-      console.log(response.data.nearby[0]);
+      if(!response.data[0])
+        return;
+      setNearby(nearby => Object.assign(nearby,response.data[0]));
+      console.log(response.data[0]);
       })
     .catch(()=>{
       console.log("error");

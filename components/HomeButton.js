@@ -37,7 +37,7 @@ export default function HomeButton(props){
 
 const styles = StyleSheet.create({
     iconButton:{
-        elevation: 1,
+        elevation: 10,
         height:45,
         width:45,
         borderRadius:8,
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
         marginTop:30,
     },
     iconHome:{
-        elevation: 1,
+        elevation: 10,
         alignSelf: `flex-end`,
         position:`absolute`,
     },

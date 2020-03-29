@@ -62,7 +62,7 @@ export default function SignupScreen(props) {
       if(response.data.hobby){
         setHobbies(response.data.hobby);
       }
-      console.log(response);
+     
     })
     .catch(()=>{
       setError('Network error. Could not fetch hobbies.');
@@ -223,8 +223,9 @@ const styles = StyleSheet.create({
     },
     midText:{
         fontSize:80,
-        marginTop:-85,
+        marginTop:-83,
         fontFamily:'Nunito',
+        fontWeight:`bold`,
         textAlign:`center`,
         color:`#202020`,
     },

@@ -29,7 +29,7 @@ export default function LogIn(props) {
           if(response.status == 200){
             success=true;
           }
-          console.log(response);
+       
         })
       .catch(()=>{
         setError('Network error. Please try again.');
@@ -128,11 +128,14 @@ const styles = StyleSheet.create({
     },
     midText:{
         marginLeft:10,
-        fontSize:70,
-        marginTop:-74.5,
-        fontWeight:`300`,
+        fontSize:78,
+      
+        fontFamily:'Nunito',
+          fontWeight:`bold`,
+        marginTop:-80,
+
         textAlign:`left`,
-        color:`#1A1A1A`,
+        color:`#202020`,
     },
     touchStyle:{
         

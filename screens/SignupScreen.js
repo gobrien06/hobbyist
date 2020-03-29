@@ -26,7 +26,7 @@ export default function SignupScreen(props) {
       await axios.post('http://lahacks-hobbyist.tech:3000/users',user)
       .then((response)=>{
           props.route.params.setTOKEN(response.data.token);
-          console.log(response.data.token);
+          
         })
       .catch(()=>{
         setError("Network error. Try again.")
@@ -129,11 +129,12 @@ const styles = StyleSheet.create({
         marginTop:25,
     },
     midText:{
-        fontSize:70,
-        marginTop:-74.5,
-        fontWeight:`300`,
+        fontSize:75,
+        marginTop:-79,
+        fontFamily:'Nunito',
+        fontWeight:`bold`,
         textAlign:`right`,
-        color:`#1A1A1A`,
+        color:`#202020`,
     },
     touchStyle:{
         marginTop:20,

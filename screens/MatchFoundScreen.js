@@ -18,29 +18,9 @@ export default function SearchSetupScreen(props) {
       Linking.openURL(link); OPENS ANDROID SMS
     }*/
 
-    const joinChannel = async() =>{
-      const accepted={
-        channelId:props.route.params.pending,
-      }
-      const config = {
-        headers: {
-          'Authorization': 'BEARER ' + props.route.params.TOKEN,
-        }
-      }
-
-      console.log(accepted);
-      await axios.post('http://lahacks-hobbyist.tech:3000/chat/channels/join',accepted,config)
-      .then((response)=>{
-        console.log(response);
-      })
-      .catch(()=>{
-        console.log("error occurred");
-      }
-      )
-    }
+   
 
     const message = async() =>{
-      joinChannel();
       props.navigation.navigate('Chat',{username:props.route.params.username,icon:props.route.params.icon,TOKEN:props.route.params.TOKEN});
     }
 

@@ -25,6 +25,10 @@ export default function HomeScreen(props) {
     props.navigation.navigate('Hobbies',{TOKEN:props.TOKEN});
   }
 
+  const toChat=()=>{
+    props.navigation.navigate('Chat',{TOKEN:props.TOKEN});
+  }
+
 
   if(!props.TOKEN){
   return (
@@ -122,7 +126,10 @@ export default function HomeScreen(props) {
       <TouchableHighlight style={styles.touchStyle} onPress={()=>goToEdit()} >
               <Text style={styles.buttonText}>Edit</Text>
       </TouchableHighlight>
-      <TouchableHighlight style={styles.touchStyle} onPress={()=>logout()}>
+      <TouchableHighlight style={styles.touchStyle} onPress={()=>toChat()}>
+        <Text style={styles.buttonText}>Chat</Text>
+      </TouchableHighlight>
+      <TouchableHighlight style={styles.lilLog} onPress={()=>logout()}>
         <Text style={styles.buttonText}>Logout</Text>
       </TouchableHighlight>
       
@@ -155,6 +162,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#202020',
   },
   buttonContainer:{
+    marginTop:-30,
     alignItems:`center`,
     justifyContent:`center`,
   },
@@ -168,7 +176,18 @@ const styles = StyleSheet.create({
     padding:5,
     width:300,
 
-    height:60,
+    height:50,
+  },
+  lilLog:{
+    marginTop:10,
+    marginBottom:30,
+    borderRadius:50,
+    alignItems:`center`,
+    backgroundColor:`#FAE99E`,
+    justifyContent:`center`,
+    padding:5,
+    width:200,
+    height:50,
   },
   buttonText:{
     fontSize:25,
