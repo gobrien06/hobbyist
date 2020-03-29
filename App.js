@@ -10,11 +10,11 @@ import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from './screens/HomeScreen';
 import SignupScreen from './screens/SignupScreen';
 import LoginScreen from './screens/LoginScreen';
-import IconSetupScreen from './screens/IconSetupScreen';
 import SearchSetupScreen from './screens/SearchSetupScreen';
 import MatchFoundScreen from './screens/MatchFoundScreen';
 import HobbiesScreen from './screens/HobbiesScreen';
 import ChatScreen from './screens/ChatScreen';
+import ChannelScreen from './screens/ChannelScreen';
 
 import useLinking from './navigation/useLinking';
 
@@ -80,7 +80,7 @@ export default function App(props) {
             <Stack.Screen name="Hobbies">
             {props => <HobbiesScreen {...props} TOKEN={TOKEN}/>}
             </Stack.Screen>
-            <Stack.Screen name="IconSetup" component={IconSetupScreen} />
+         
             <Stack.Screen name="SearchSetup">
               {props => <SearchSetupScreen {...props} TOKEN={TOKEN}/>}
             </Stack.Screen>

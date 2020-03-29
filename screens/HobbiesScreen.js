@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Image, TextInput, StyleSheet, View, Dimensions, TouchableHighlight, Text, ScrollView } from 'react-native';
 import HomeButton from '../components/HomeButton';
 import axios from 'axios';
-import {LinearGradient} from 'expo-linear-gradient';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 export default function SignupScreen(props) {
   const [hobbies, setHobbies] = React.useState([]);
@@ -39,7 +39,7 @@ export default function SignupScreen(props) {
       return;
     }
 
-   await axios.post('http://lahacks-hobbyist.tech:3000/users/update',user,config)
+    await axios.post('http://lahacks-hobbyist.tech:3000/users/update',user,config)
     .then((response)=>{
         console.log(response);
       })
@@ -47,7 +47,7 @@ export default function SignupScreen(props) {
       setError('Network error. Please try again.');
     })
   
-    props.navigation.navigate('IconSetup');
+    props.navigation.navigate('SearchSetup');
   }
 
   const getInitial= async()=>{
@@ -57,7 +57,7 @@ export default function SignupScreen(props) {
       }
     }
     
-    await axios.get('http://lahacks-hobbyist.tech:3000/users/hobby',config)
+     await axios.get('http://lahacks-hobbyist.tech:3000/users/hobby',config)
     .then((response)=>{
       if(response.data.hobby){
         setHobbies(response.data.hobby);
@@ -102,6 +102,7 @@ export default function SignupScreen(props) {
   
     return (
         <View style={styles.container}>
+          <KeyboardAwareScrollView style={{}}   scrollEnabled={false} extraScrollHeight={130} enableOnAndroid={true} enableResetScrollToCoords={true}>
             <View>
             <Image
                 source={
@@ -146,7 +147,7 @@ export default function SignupScreen(props) {
             {error}
             </Text>
                 
-           
+            </KeyboardAwareScrollView>
         </View>
       );
 }
@@ -155,9 +156,8 @@ var widthVal = Dimensions.get('window').width + 10;
 
 const styles = StyleSheet.create({
   errorText:{
-    margin:10,
-    padding:20,
-    fontSize:20,
+    padding:10,
+    fontSize:10,
     color:`#fff`,
   },
     closeText:{

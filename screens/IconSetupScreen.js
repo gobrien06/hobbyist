@@ -20,7 +20,7 @@ export default function IconSetupScreen(props) {
         }
     }
 
-    await axios.post('http://lahacks-hobbyist.tech:3000/user/update',user,config)
+     await axios.post('http://lahacks-hobbyist.tech:3000/user/update',user,config)
     .then((response)=>{
         console.log(response);
     })

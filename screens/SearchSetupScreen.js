@@ -16,13 +16,14 @@ export default function SearchSetupScreen(props) {
   const searchStart = async() =>{
     setLoading(true);
     setMsg("");
-   await submitInfo();
+    await submitInfo();
     searchMatch();
   }
 
   const searchMatch = () =>{
     if(nearby.hobby){
-      props.navigation.navigate('MatchScreen',{hobbies:nearby.hobby,username:nearby.username,icon:nearby.icon,TOKEN:props.TOKEN,pending:nearby.pending_channel});
+      console.log("pendingchannel" + nearby.pending_channel);
+      props.navigation.navigate('MatchScreen',{hobbies:nearby.hobby,username:nearby.username,icon:nearby.icon,TOKEN:props.TOKEN,pending:nearby.pending_channel,loading:setLoading});
       return;
     }
     else{
@@ -44,12 +45,10 @@ export default function SearchSetupScreen(props) {
         'Authorization': 'BEARER ' + props.TOKEN,
       }
     }
-
-    console.log(user);
-  
-   await axios.post('http://lahacks-hobbyist.tech:3000/users/geo',user,config)
+    await axios.post('http://lahacks-hobbyist.tech:3000/users/geo',user,config)
     .then((response)=>{
       setNearby(nearby => Object.assign(nearby,response.data.nearby[0]));
+      console.log(response.data.nearby[0]);
       })
     .catch(()=>{
       console.log("error");
@@ -261,7 +260,7 @@ const styles = StyleSheet.create({
       buttonContainer:{
         alignItems: 'center',
         justifyContent: 'center', 
-          marginTop:30,
+          marginTop:50,
           textAlign:`center`,
       }
 });

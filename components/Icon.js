@@ -3,8 +3,8 @@ import { Image, } from 'react-native';
 import axios from 'axios';
 
 export default function Icon(props){
-    const [icon, setIcon] = React.useState('https://wompampsupport.azureedge.net/fetchimage?siteId=7575&v=2&jpgQuality=100&width=700&url=https%3A%2F%2Fi.kym-cdn.com%2Fentries%2Ficons%2Fmobile%2F000%2F028%2F232%2Fhamster.jpg');
-    
+    //const [icon, setIcon] = React.useState('');
+    /*
     const getIcon=()=>{
         if(props.icon && props.icon!=''){
             setIcon(props.icon);
@@ -30,19 +30,19 @@ export default function Icon(props){
         }) 
       }
 
-    React.useEffect(getIcon,[]);
+    React.useEffect(getIcon,[]);*/
 
     return(
         <Image
         source={
-            {uri:icon}
+            require('../assets/images/leaf-doodle-png-2.png')
         }
         style={
             props.styles,
             {
             borderRadius:100,
-            height:160,
-            width:160,
+            height:140,
+            width:140,
             alignSelf:`center`,
             marginTop:-183,
             marginRight:4,

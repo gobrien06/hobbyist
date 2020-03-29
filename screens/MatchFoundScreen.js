@@ -7,6 +7,7 @@ import axios from 'axios';
 
 export default function SearchSetupScreen(props) {
     const searchAgain = () =>{
+        props.route.params.loading(false);
         props.navigation.navigate('SearchSetup');
     }
 
@@ -19,10 +20,16 @@ export default function SearchSetupScreen(props) {
 
     const joinChannel = async() =>{
       const accepted={
-        channelID:props.pending_channel,
+        channelId:props.route.params.pending,
+      }
+      const config = {
+        headers: {
+          'Authorization': 'BEARER ' + props.route.params.TOKEN,
+        }
       }
 
-     await axios.post('http://lahacks-hobbyist.tech:3000/chat/channels/join',accepted)
+      console.log(accepted);
+      await axios.post('http://lahacks-hobbyist.tech:3000/chat/channels/join',accepted,config)
       .then((response)=>{
         console.log(response);
       })
@@ -34,10 +41,10 @@ export default function SearchSetupScreen(props) {
 
     const message = async() =>{
       joinChannel();
-      props.navigation.navigate('Chat',{username:props.route.params.username,icon:props.route.params.icon});
+      props.navigation.navigate('Chat',{username:props.route.params.username,icon:props.route.params.icon,TOKEN:props.route.params.TOKEN});
     }
 
-
+  
     function listItems(){
       let items = [ ];
       console.log(props.route.params.hobbies);
@@ -137,7 +144,7 @@ const styles = StyleSheet.create({
     rangeText:{
       fontFamily:`Nunito`,
       textAlign:`center`,
-      marginTop:30,
+      marginTop:50,
         color:`#47CEB2`,
         fontSize:34,
     },

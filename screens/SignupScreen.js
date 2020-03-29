@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Image, TextInput, StyleSheet, View, Dimensions, TouchableHighlight, Text } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import HomeButton from '../components/HomeButton';
-import {LinearGradient} from 'expo-linear-gradient';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import axios from 'axios';
 
 export default function SignupScreen(props) {
@@ -12,7 +12,7 @@ export default function SignupScreen(props) {
     const [error, setError] = React.useState('');
  
 
-    const submitInfo = async () => {
+    const submitInfo =  async() => {
       const user={
         username:usernm,
         password:password,
@@ -23,7 +23,7 @@ export default function SignupScreen(props) {
         setError('Missing a field. Please enter all fields before continuing.');
         return;
       }
-     await axios.post('http://lahacks-hobbyist.tech:3000/users',user)
+      await axios.post('http://lahacks-hobbyist.tech:3000/users',user)
       .then((response)=>{
           props.route.params.setTOKEN(response.data.token);
           console.log(response.data.token);
@@ -37,7 +37,8 @@ export default function SignupScreen(props) {
 
     return (
         <View style={styles.container}>
-          <ScrollView>
+          <KeyboardAwareScrollView style={{flexGrow:1,}} enableAutomaticScroll="true" extraScrollHeight={200} enableOnAndroid={true}  >
+
             <View>
             <Image
                 source={
@@ -88,7 +89,7 @@ export default function SignupScreen(props) {
                 }
                 style={styles.bottomBubble}
             />
-                 </ScrollView>
+                 </KeyboardAwareScrollView>
         </View>
       );
 }

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Image, TextInput, StyleSheet, View, Dimensions, TouchableHighlight, Text } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import {LinearGradient} from 'expo-linear-gradient';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import HomeButton from '../components/HomeButton';
 import axios from 'axios';
 
@@ -9,6 +9,7 @@ export default function LogIn(props) {
     const [usernm,setUserNM] = React.useState(null);
     const [password, setPassword] = React.useState(null);
     const [error, setError] = React.useState(null);
+
 
   
     const submitInfo = async() => {
@@ -44,7 +45,8 @@ export default function LogIn(props) {
 
     return (
         <View style={styles.container}>
-            <ScrollView>
+            <KeyboardAwareScrollView style={{flexGrow:1,}} enableAutomaticScroll="true" extraScrollHeight={100} enableOnAndroid={true}  >
+             
             <View>
               <Image
               source={
@@ -90,7 +92,7 @@ export default function LogIn(props) {
                 style={styles.bottomBubble}
             />
         
-            </ScrollView>
+            </KeyboardAwareScrollView>
         </View>
       );
 }
