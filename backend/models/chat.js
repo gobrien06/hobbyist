@@ -121,7 +121,7 @@ function sendMessage(req, res) {
 function getMessages(req, res) {
     knex('messages').select('content').where({channelid: req.body.channelId}).then(result => {
         res.status(201);
-        res.json(result[0]);
+        res.json(result);
         console.log(result);
     }, result => {
         res.sendStatus(400);
