@@ -105,10 +105,10 @@ function leaveChannel(req, res) {
 }
 
 function sendMessage(req, res) {
+    console.log(req.body);
     knex('messages').insert({
         channelid: req.body.channelId,  
-        content: req.body.message,
-        date: (new Date()).toISOString()
+        content: req.body.content,
     }).then(result => {
         res.sendStatus(201);
         console.log(result); 
@@ -119,10 +119,9 @@ function sendMessage(req, res) {
 }
 
 function getMessages(req, res) {
-    console.log('reee');
-    knex('messages').select('*').where({channelid: req.body.channelId}).then(result => {
+    knex('messages').select('content').where({channelid: req.body.channelId}).then(result => {
         res.status(201);
-        res.json({messages: result});
+        res.json(result[0]);
         console.log(result);
     }, result => {
         res.sendStatus(400);
