@@ -24,12 +24,8 @@ export default function ChannelScreen(props){
             if(!(response.data[0]))
                 return;
             else{
-                for(let i=0;i<response.data.length;i++){
-                    setMessages((messages) => messages.concat(
-                        response.data[i].content
-                     ));
+                setMessages(response.data.map((e)=>{return e.content}));
                 }
-            }
             })
         .catch((errors)=>{
             console.log(errors);
@@ -58,6 +54,7 @@ export default function ChannelScreen(props){
         .catch((error)=>{
             console.log(error);
         })
+        snapshot();
     }
 
     const renderBubble=(props)=>{
@@ -75,10 +72,12 @@ export default function ChannelScreen(props){
        
           />
     }
-  
+    
+
     const onSend = (newMessage =[])=>{
         setMessages(GiftedChat.append(messages,newMessage));
         sendMessage(newMessage);
+        snapshot();
     }
 
     const renderInputToolbar=(props)=>{
@@ -97,6 +96,7 @@ export default function ChannelScreen(props){
             <>
 
             <GiftedChat
+                isAnimated
             messages={messages}
             onSend={ newMessage=>onSend(newMessage)}
             user={{
@@ -117,11 +117,13 @@ export default function ChannelScreen(props){
                     },
             }}
             />
-          <HomeButton navigation={props.navigation}/>
+          <HomeButton navigation={props.navigation} color='turq'/>
             </>
       
     ) 
 }
+
+
 
 const styles = StyleSheet.create({
     empty:{
