@@ -34,7 +34,7 @@ export default function SearchSetupScreen(props) {
 
     const message = async() =>{
       joinChannel();
-      props.navigation.navigate('Chat');
+      props.navigation.navigate('Chat',{username:props.route.params.username,icon:props.route.params.icon});
     }
 
 
@@ -113,7 +113,6 @@ var widthVal = Dimensions.get('window').width + 10;
 const styles = StyleSheet.create({
     scrollText:{
       fontFamily:`Nunito`,
-
       color:`#FAE99E`,
       fontSize:25,
 

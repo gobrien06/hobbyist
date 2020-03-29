@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {View,ScrollView,Text,} from 'react-native';
+import {View,ScrollView,Text,StyleSheet, TouchableHighlight} from 'react-native';
 import axios from 'axios';
 
 export default function ChatScreen(props){
@@ -18,27 +18,39 @@ export default function ChatScreen(props){
 
     const getChats=()=>{
         let chats = [ ];
-        for(let i=0;i<hobbies.length;i++){
+        for(let i=0;i<channels.length;i++){
             items.push(
               <View style={styles.channel}>
-              <Text style={styles.channelLabel}>{props[i]}</Text>
+
+              <Text style={styles.channelLabel}>{channels[i]}</Text>
               <TouchableHighlight onPress={() => handleRemove(i)}  style={styles.removeButton}><Text style={styles.closeText}>x</Text></TouchableHighlight>
+              <TouchableHighlight onPress={()=>{handleOpen(i)}} style={styles.reply}></TouchableHighlight>
               </View>
-           )
-        }
-        console.log(hobbies);
+           )}
+        
+        console.log(chats);
         //sendItems();
         return chats;
     }
+    
 
     React.useEffect(getChannels,[]);
 
     return(
         <View style={styles.container}>
-            <View style={styles.topBar}>
-                
-            </View>
-
+            <ScrollView style={styles.displayChats}>
+                {getChats()}
+            </ScrollView>
         </View>
     )
 }
+
+
+const styles = StyleSheet.create({
+    container:{
+        flex:1,
+        backgroundColor: '#202020',
+     
+    },
+
+});

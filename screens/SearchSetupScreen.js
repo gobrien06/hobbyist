@@ -9,7 +9,7 @@ export default function SearchSetupScreen(props) {
   const [isLoading,setLoading] = React.useState(false);
   const [longitude, setLongitude] = React.useState();
   const [latitude,setLatitude] = React.useState();
-  const [nearby, setNearby] = React.useState(null);
+  const [nearby, setNearby] = React.useState({});
   const [msg, setMsg] = React.useState("");
   
 
@@ -20,13 +20,13 @@ export default function SearchSetupScreen(props) {
     searchMatch();
   }
 
-  const searchMatch = async() =>{
-    if(nearby[0].hobby){
-      console.log(nearby[0].hobby);
-      props.navigation.navigate('MatchScreen',{hobbies:nearby[0].hobby,username:nearby[0].username,icon:nearby[0].icon,TOKEN:props.TOKEN,pending:nearby[0].pending_channel});
+  const searchMatch = () =>{
+    if(nearby.hobby){
+      props.navigation.navigate('MatchScreen',{hobbies:nearby.hobby,username:nearby.username,icon:nearby.icon,TOKEN:props.TOKEN,pending:nearby.pending_channel});
+      return;
     }
     else{
-      setMsg("There's nobody near you. Try adding hobbies!");
+      setMsg("There's nobody nearby. Try adding hobbies!");
       setLoading(false);
       return;
     }
@@ -49,21 +49,13 @@ export default function SearchSetupScreen(props) {
   
    await axios.post('http://lahacks-hobbyist.tech:3000/users/geo',user,config)
     .then((response)=>{
-        if(response.data.nearby){
-          setNearby(response.data.nearby);
-        }
-        console.log(response.data.nearby[0].hobby);
+      setNearby(nearby => Object.assign(nearby,response.data.nearby[0]));
       })
-    .catch((error)=>{
-      console.log(error);
+    .catch(()=>{
+      console.log("error");
     })
-
-    console.log('nearby'+nearby[0].hobby);
-
-    if(nearby[0].hobby==[]){
-      setNearby(null);
-    }
-
+  
+    console.log(nearby);
   }
 
   const getLocation = () =>{
