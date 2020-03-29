@@ -39,7 +39,7 @@ export default function LogIn(props) {
         setError("Credentials incorrect. Please try again.")
         return;
       }
-
+        props.setUser(usernm);
         props.navigation.navigate('SearchSetup');
     }
 

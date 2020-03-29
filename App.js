@@ -37,6 +37,7 @@ export default function App(props) {
   const containerRef = React.useRef();
   const { getInitialState } = useLinking(containerRef);
   const [TOKEN, setTOKEN] = React.useState(null);
+  const [username, setUser] = React.useState('');
 
   // Load any resources or data that we need prior to rendering the app
   React.useEffect(() => {
@@ -76,7 +77,9 @@ export default function App(props) {
             {props => <HomeScreen {...props} TOKEN={TOKEN} setTOKEN={setTOKEN}/>}
             </Stack.Screen> 
             <Stack.Screen name="Signup" component={SignupScreen}/>
-            <Stack.Screen name="Login" component={LoginScreen}/>
+            <Stack.Screen name="Login">
+            {props => <LoginScreen {...props} setUser={setUser}/>}
+            </Stack.Screen>
             <Stack.Screen name="Hobbies">
             {props => <HobbiesScreen {...props} TOKEN={TOKEN}/>}
             </Stack.Screen>
@@ -87,7 +90,7 @@ export default function App(props) {
             <Stack.Screen name="MatchScreen" component={MatchFoundScreen} />
             <Stack.Screen name="Chat" component={ChatScreen} />
             <Stack.Screen name="Channel">
-              {props => <ChannelScreen {...props} TOKEN={TOKEN} />}
+              {props => <ChannelScreen {...props} TOKEN={TOKEN} username={username}/>}
             </Stack.Screen>
           </Stack.Navigator>
         </NavigationContainer>

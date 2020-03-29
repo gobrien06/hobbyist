@@ -1,11 +1,12 @@
 import * as React from 'react';
-import  { Bubble, GiftedChat } from 'react-native-gifted-chat'
+import  { Bubble, GiftedChat, InputToolbar, Send, Message} from 'react-native-gifted-chat';
+import {StyleSheet, View} from 'react-native';
 import axios from 'axios';
-
+import HomeButton from '../components/HomeButton';
 
 export default function ChannelScreen(props){
-    const [messages,setMessages] = React.useState();
-    
+    const [messages,setMessages] = React.useState([]);
+
     const getMessages=()=>{
         const config = {
             headers: {
@@ -16,17 +17,28 @@ export default function ChannelScreen(props){
           const channelId ={
             channelId: props.route.params.channelId,
           }
-      
-         
+
+             
         axios.post('http://lahacks-hobbyist.tech:3000/chat/channels/messages',channelId,config)
         .then((response)=>{
-            setMessages(response.data.messages);
-        })
+            if(!(response.data[0]))
+                return;
+            else{
+                for(let i=0;i<response.data.length;i++){
+                    setMessages((messages) => messages.concat(
+                        response.data[i].content
+                     ));
+                }
+            }
+            })
         .catch((errors)=>{
             console.log(errors);
         })
+        console.log("msgs"+messages);
+     
     
     }
+
 
     const sendMessage=(content)=>{
         const config = {
@@ -36,51 +48,94 @@ export default function ChannelScreen(props){
           }
 
         const message ={
-            channedId:props.route.params.channedId,
-            content:content
+           content:content[0],
+           channelId: props.route.params.channelId,
         }
-        
-        axios.post('http://lahacks-hobbyist.tech:3000/chat/channels/messages', message,config)
+        axios.post('http://lahacks-hobbyist.tech:3000/chat/channels/send', message,config)
         .then((response)=>{
-            console.log(response);
+            console.log(response.data);
         })
         .catch((error)=>{
             console.log(error);
         })
+    }
+
+    const renderBubble=(props)=>{
+        return <Bubble {...props} 
+
+        wrapperStyle={{
+            left: {
+              backgroundColor: '#47CEB2',
+            },
+            right:{
+                backgroundColor:'#000',
+            
+            }
+          }}
+       
+          />
+    }
+  
+    const onSend = (newMessage =[])=>{
+        setMessages(GiftedChat.append(messages,newMessage));
+        sendMessage(newMessage);
+    }
+
+    const renderInputToolbar=(props)=>{
         
+        return <InputToolbar {...props} containerStyle={styles.toolBar}/>
     }
-
-    const gatherMessages=()=>{
-        let items = [];
-        if(!messages)
-            return;
-       for(let i=0;i<messages.length;i++){
-            items.push({
-                _id:messages[i].messageid,
-                text:messages[i].content,
-                createdAt:messages[i].date,
-            })
-       }
+    
+    const renderSend=(props)=>{
+        return <Send {...props} textStyle={{color:'#47CEB2',  fontSize:25,
+        fontFamily:'Nunito',}}/>
     }
-
-
-
     
     React.useEffect(getMessages,[]);
 
     return(
-        <GiftedChat
-        messages={messages}
-        onSend={(content)=>sendMessage(content)}
-        user={{
-            _id: props.TOKEN,
-        }}
-        style={{
-            backgroundColor:`#202020`,
-            color:`#202020`,
-        }}
+            <>
+
+            <GiftedChat
+            messages={messages}
+            onSend={ newMessage=>onSend(newMessage)}
+            user={{
+                _id: props.TOKEN,
+                name:props.username,
+            }}
+
+
+            renderInputToolbar={renderInputToolbar}
+            renderBubble={renderBubble}
+            alwaysShowSend={true}
+            renderSend={renderSend}
+            bottomOffset={83}
+            listViewProps={
+                {
+                    style: {
+                    backgroundColor: '#202020',
+                    },
+            }}
+            />
+          <HomeButton navigation={props.navigation}/>
+            </>
       
-        />
-       
     ) 
 }
+
+const styles = StyleSheet.create({
+    empty:{
+        backgroundColor:'#202020',
+    },
+    toolBar:{
+        backgroundColor:'#202020',
+        borderTopWidth:0,
+        height:50,
+    },
+    toolText:{
+        fontSize:20,
+        fontFamily:'Nunito',
+        color:'grey'
+
+    }
+});

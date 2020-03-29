@@ -70,7 +70,9 @@ export default function ChatScreen(props){
                 let old = [...unJoined];
                 old.splice(i,1);
                 return old;
+                getChannels();
             });
+
             })
             
       .catch((error)=>{
@@ -102,8 +104,8 @@ export default function ChatScreen(props){
           getChannels();
         }
         )
-        .catch(()=>{
-          console.log("error occurred");
+        .catch((error)=>{
+          console.log(error);
         }
         )
       }
@@ -159,13 +161,13 @@ export default function ChatScreen(props){
                 require('../assets/images/oc-1.png')
             }
             style={{
-                
+                elevation:-1,
                 height:250,
                 width:widthVal,
                 borderTopRightRadius:100,
                 borderTopLeftRadius:100,
             }}/>
-            <HomeButton navigation={props.navigation} />
+            <HomeButton navigation={props.navigation} color='turq'/>
         </View>
     )
 }
