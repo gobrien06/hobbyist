@@ -80,7 +80,7 @@ export default function ChatScreen(props){
     }
 
     const reply=(i)=>{
-        props.navigation.navigate('Channel', {channel:joined[i].channelId});
+        props.navigation.navigate('Channel', {channelId:joined[i].channelId});
     }
 
     const joinChannel = async(i) =>{
@@ -128,7 +128,7 @@ export default function ChatScreen(props){
               <View style={styles.channel}>
               <Text style={styles.channelLabel}>{joined[i].members}</Text>
               <TouchableHighlight onPress={() => handleJoinRemove(i)}  style={styles.removeButton}><Text style={styles.closeText}>x</Text></TouchableHighlight>
-              <TouchableHighlight onPress={()=>reply(i)} style={styles.reply}><Text style={styles.replyText}>Reply</Text></TouchableHighlight>
+              <TouchableHighlight onPress={()=>reply(i)} style={styles.reply}><Text style={styles.replyText}>Message</Text></TouchableHighlight>
               </View>
            )}}
         
@@ -147,7 +147,7 @@ export default function ChatScreen(props){
             <View style={styles.topBar}>
              
                 <Text style={styles.topText}>
-                Chat.
+                Conversations.
                 </Text>
           
            
@@ -155,7 +155,17 @@ export default function ChatScreen(props){
             <ScrollView style={styles.displayChats}>
                 {getChats()}
             </ScrollView>
-            <HomeButton navigation={props.navigation} color="turq"/>
+            <Image source={
+                require('../assets/images/oc-1.png')
+            }
+            style={{
+                
+                height:250,
+                width:widthVal,
+                borderTopRightRadius:100,
+                borderTopLeftRadius:100,
+            }}/>
+            <HomeButton navigation={props.navigation} />
         </View>
     )
 }
@@ -166,7 +176,7 @@ const styles = StyleSheet.create({
         color:`#FFF`,
         fontSize:45,
         fontFamily:`Nunito`,
-        
+        fontWeight:`bold`,
         textAlign:`left`,
         marginTop:15,
         //fontWeight:`bold`,
@@ -201,7 +211,7 @@ const styles = StyleSheet.create({
         color:`#FFF`,
         fontFamily:`Nunito`,
         fontWeight:`300`,
-        fontSize:35,
+        fontSize:30,
         
     },
     removeButton:{
@@ -215,7 +225,7 @@ const styles = StyleSheet.create({
     },
     closeText:{
         textAlign:`center`,
-        fontSize:50,
+        fontSize:45,
         color:`#FFF`,
         fontFamily:`Nunito`,
     },
@@ -224,7 +234,7 @@ const styles = StyleSheet.create({
         justifyContent:`center`,
         alignContent:`center`,
         height:50,
-        width:100,
+        width:120,
         marginTop:15,
         borderRadius:10,
         backgroundColor:`#47CEB2`,

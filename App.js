@@ -86,7 +86,9 @@ export default function App(props) {
             </Stack.Screen>
             <Stack.Screen name="MatchScreen" component={MatchFoundScreen} />
             <Stack.Screen name="Chat" component={ChatScreen} />
-            <Stack.Screen name="Channel" component={ChannelScreen} />
+            <Stack.Screen name="Channel">
+              {props => <ChannelScreen {...props} TOKEN={TOKEN} />}
+            </Stack.Screen>
           </Stack.Navigator>
         </NavigationContainer>
       </View>
